@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class PostsState with ChangeNotifier {
   List<Post> _posts = [];
 
-  List<Post> get posts => List.from(_posts);
+  List<Post> get posts =>
+      List.from(_posts.where((p) => p.domain == "i.redd.it"));
 
   PostsRepository _postsRepository = PostsRepository();
 
