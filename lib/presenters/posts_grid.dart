@@ -1,4 +1,5 @@
 import 'package:diaporama/models/post.dart';
+import 'package:diaporama/screens/viewer_screen.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +14,13 @@ class PostsGrid extends StatelessWidget {
           crossAxisCount: 3,
           children: <Widget>[
             for (Post post in state.posts)
-              Image.network(
-                post.thumbnailUrl,
-                fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewerScreen())),
+                child: Image.network(
+                  post.thumbnailUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
           ],
         );
