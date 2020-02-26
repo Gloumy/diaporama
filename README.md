@@ -1,16 +1,16 @@
-# diaporama
+# Diaporama (for Reddit)
 
-A new Flutter project.
+## A pretty simple Flutter app to browse Reddit with swiping gestures
 
-## Getting Started
+### Intended Features
+* Create subreddits list
+* Swipe through displayed posts (PageView)
+* Light and Dark themes
+* Autoplay
+* Maybe more if i think about something else ..
 
-This project is a starting point for a Flutter application.
+### Contribute
+Well, don't hesitate to share feedback and/or ideas !
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Running the app
+No configuration needed as for now, just clone, cd in, flutter run and voilà 
