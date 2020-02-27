@@ -3,9 +3,35 @@ import 'package:diaporama/presenters/posts_grid.dart';
 import 'package:diaporama/utils/reddit_client.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Future<void> _checkFirstTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Check if the user has already opened the app at least once
+    if (!prefs.containsKey("notAVirgin")) {
+      // prefs.setString("notAVirgin", "true"); //TODO : Uncomment this
+      print("first time, please be gentle");
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text("Coucou !"),
+              ));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstTime();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
