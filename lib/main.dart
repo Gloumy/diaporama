@@ -1,27 +1,39 @@
+import 'dart:async';
+
 import 'package:diaporama/screens/home_screen.dart';
 import 'package:diaporama/states/posts_state.dart';
-import 'package:diaporama/utils/secrets.dart';
-import 'package:draw/draw.dart';
+import 'package:diaporama/utils/reddit_client.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:uni_links/uni_links.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final reddit = Reddit.createInstalledFlowInstance(
-    clientId: redditSecret,
-    userAgent: "diaporama-app",
-    redirectUri: Uri.parse("diaporama://cornet.dev"),
-  );
-  final authUrl = reddit.auth.url(['*'], "diaporama");
-
-  launch(authUrl.toString());
-
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
+  Future<Null> initPlatformState() async {
+    try {
+      Uri initialLink = await getInitialUri();
+      if (initialLink != null && initialLink.queryParameters["code"] != null)
+        RedditClient.reddit.auth.authorize(initialLink.queryParameters["code"]);
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<PostsState>(
