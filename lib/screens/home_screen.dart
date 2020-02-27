@@ -1,6 +1,7 @@
 import 'package:diaporama/presenters/load_posts_button.dart';
 import 'package:diaporama/presenters/posts_grid.dart';
 import 'package:diaporama/utils/reddit_client.dart';
+import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,13 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Check if the user has already opened the app at least once
     if (!prefs.containsKey("notAVirgin")) {
-      // prefs.setString("notAVirgin", "true"); //TODO : Uncomment this
-      print("first time, please be gentle");
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text("Coucou !"),
-              ));
+      prefs.setString("notAVirgin", "true");
+      showDialog(context: context, builder: (context) => FirstTimeModal());
     }
   }
 
