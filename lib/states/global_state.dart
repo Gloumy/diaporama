@@ -1,3 +1,4 @@
+import 'package:diaporama/services/reddit_client_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,13 +9,17 @@ class GlobalState with ChangeNotifier {
   bool get openFirstTimeModal => _openFirstTimeModal;
   String get authCode => _authCode;
   bool get hasAuthCode => _authCode != null;
+  String get authUrl => _redditClientService.authUrl;
+
+  RedditClientService _redditClientService = RedditClientService();
 
   Future<void> initApp({
     String authCode,
   }) async {
     if (authCode != null) {
       _authCode = authCode;
-      // RedditClientService(params: {"authCode": _authCode}).authorizeClient();
+      _redditClientService.authorizeClient(authCode);
+      await storeAuthCode();
     } else {
       await checkAuthCode();
     }
