@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:diaporama/screens/home_screen.dart';
+import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/reddit_client.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:uni_links/uni_links.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  GlobalState globalState = GlobalState();
+  await globalState.initApp();
   runApp(MyApp());
 }
 
@@ -36,8 +39,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PostsState>(
-      create: (context) => PostsState(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<GlobalState>(
+          create: (context) => GlobalState(),
+        ),
+        ChangeNotifierProvider<PostsState>(
+          create: (context) => PostsState(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Diaporama',
         home: HomeScreen(),
