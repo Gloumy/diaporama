@@ -9,8 +9,17 @@ class GlobalState with ChangeNotifier {
   String get authCode => _authCode;
   bool get hasAuthCode => _authCode != null;
 
-  Future<void> initApp() async {
-    await checkAuthCode();
+  Future<void> initApp({
+    String authCode,
+  }) async {
+    if (authCode != null) {
+      _authCode = authCode;
+      // RedditClientService(params: {"authCode": _authCode}).authorizeClient();
+    } else {
+      await checkAuthCode();
+    }
+
+    notifyListeners();
   }
 
   Future<void> checkAuthCode() async {
@@ -19,5 +28,10 @@ class GlobalState with ChangeNotifier {
       _authCode = prefs.getString("authCode");
       notifyListeners();
     }
+  }
+
+  Future<void> storeAuthCode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("authCode", _authCode);
   }
 }
