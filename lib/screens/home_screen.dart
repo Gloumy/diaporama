@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             LoadPostsButton(),
             RaisedButton(
-              onPressed: () => launch(RedditClient.authUrl.toString()),
+                  Provider.of<GlobalState>(context, listen: false).authUrl),
               child: Text("Auth"),
             ),
             RaisedButton(
