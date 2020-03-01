@@ -12,6 +12,7 @@ class GlobalState with ChangeNotifier {
   bool get openFirstTimeModal => _openFirstTimeModal;
   bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
+  Redditor get redditor => _redditClientService.user;
 
   RedditClientService _redditClientService;
 
@@ -22,6 +23,7 @@ class GlobalState with ChangeNotifier {
       print("Initialize Installed Client with authCode");
       _redditClientService = RedditClientService.createInstalledFlow(authCode);
       await _redditClientService.authorizeClient(authCode);
+      await _redditClientService.setUser();
     } else {
       await checkCredentials();
       if (_credentials == null) {
@@ -34,9 +36,9 @@ class GlobalState with ChangeNotifier {
         _redditClientService = RedditClientService(reddit: reddit);
       } else {
         print("Restore Authenticated Instance with credentials");
-        print(_credentials.toString());
         _redditClientService =
             RedditClientService.restoreInstalledFlow(_credentials);
+        await _redditClientService.setUser();
       }
     }
 

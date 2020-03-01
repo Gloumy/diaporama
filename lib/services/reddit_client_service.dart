@@ -8,6 +8,9 @@ class RedditClientService {
   RedditClientService({this.reddit});
 
   String get authUrl => reddit.auth.url(['*'], "diaporama").toString();
+  Redditor get user => _user;
+
+  Redditor _user;
 
   factory RedditClientService.createInstalledFlow(String authCode) {
     final Reddit reddit = Reddit.createInstalledFlowInstance(
@@ -37,7 +40,7 @@ class RedditClientService {
     prefs.setString("credentials", reddit.auth.credentials.toJson());
   }
 
-  // String getCredentials() {
-  //   return _reddit.auth.credentials.toJson();
-  // }
+  Future<void> setUser() async {
+    _user = await reddit.user.me();
+  }
 }
