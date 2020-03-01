@@ -1,14 +1,15 @@
 import 'package:diaporama/services/reddit_client_service.dart';
+import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalState with ChangeNotifier {
   bool _openFirstTimeModal = false;
-  String _authCode;
+  String _credentials;
 
   bool get openFirstTimeModal => _openFirstTimeModal;
-  String get authCode => _authCode;
-  bool get hasAuthCode => _authCode != null;
+  String get credentials => _credentials;
+  bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
 
   RedditClientService _redditClientService = RedditClientService();
@@ -17,26 +18,28 @@ class GlobalState with ChangeNotifier {
     String authCode,
   }) async {
     if (authCode != null) {
-      _authCode = authCode;
       _redditClientService.authorizeClient(authCode);
-      await storeAuthCode();
+      await storeCredentials();
     } else {
-      await checkAuthCode();
+      await checkCredentials();
+      if (_credentials != null)
+        Reddit.restoreInstalledAuthenticatedInstance(_credentials);
     }
 
     notifyListeners();
   }
 
-  Future<void> checkAuthCode() async {
+  Future<void> checkCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("authCode")) {
-      _authCode = prefs.getString("authCode");
+    if (prefs.containsKey("credentials")) {
+      _credentials = prefs.getString("credentials");
       notifyListeners();
     }
   }
 
-  Future<void> storeAuthCode() async {
+  Future<void> storeCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("authCode", _authCode);
+    _credentials = _redditClientService.getCredentials();
+    prefs.setString("credentials", _credentials);
   }
 }
