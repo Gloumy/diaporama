@@ -1,7 +1,9 @@
 import 'package:diaporama/services/reddit_client_service.dart';
+import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class GlobalState with ChangeNotifier {
   bool _openFirstTimeModal = false;
@@ -11,18 +13,31 @@ class GlobalState with ChangeNotifier {
   bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
 
-  RedditClientService _redditClientService = RedditClientService();
+  RedditClientService _redditClientService;
 
   Future<void> initApp({
     String authCode,
   }) async {
     if (authCode != null) {
-      _redditClientService.authorizeClient(authCode);
-      // await storeCredentials();
+      print("Initialize Installed Client with authCode");
+      _redditClientService = RedditClientService.createInstalledFlow(authCode);
+      await _redditClientService.authorizeClient(authCode);
     } else {
       await checkCredentials();
-      if (_credentials != null) print(_credentials);
-      // Reddit.restoreInstalledAuthenticatedInstance(_credentials);
+      if (_credentials == null) {
+        print("Initialize Anonymous Client");
+        Reddit reddit = await Reddit.createUntrustedReadOnlyInstance(
+          clientId: redditSecret,
+          userAgent: "diaporama-app",
+          deviceId: Uuid().v4(),
+        );
+        _redditClientService = RedditClientService(reddit: reddit);
+      } else {
+        print("Restore Authenticated Instance with credentials");
+        print(_credentials.toString());
+        _redditClientService =
+            RedditClientService.restoreInstalledFlow(_credentials);
+      }
     }
 
     notifyListeners();
@@ -35,10 +50,4 @@ class GlobalState with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // Future<void> storeCredentials() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   _credentials = _redditClientService.getCredentials();
-  //   prefs.setString("credentials", _credentials);
-  // }
 }

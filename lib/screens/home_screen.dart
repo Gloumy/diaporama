@@ -1,11 +1,10 @@
 import 'package:diaporama/presenters/load_posts_button.dart';
 import 'package:diaporama/presenters/posts_grid.dart';
-import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/utils/reddit_client.dart';
+import 'package:diaporama/utils/secrets.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,8 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             LoadPostsButton(),
             RaisedButton(
-              onPressed: () => launch(
-                  Provider.of<GlobalState>(context, listen: false).authUrl),
+              onPressed: () {
+                Reddit reddit = Reddit.createInstalledFlowInstance(
+                  clientId: redditSecret,
+                  userAgent: "diaporama-app",
+                  redirectUri: Uri.parse("diaporama://cornet.dev"),
+                );
+                launch(reddit.auth.url(["*"], "diaporama-auth").toString());
+              },
               child: Text("Auth"),
             ),
             RaisedButton(
