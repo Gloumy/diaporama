@@ -16,4 +16,8 @@ class RedditClientService {
     Redditor user = await _reddit.user.me();
     print(user.displayName);
   }
+
+  String getCredentials() {
+    return _reddit.auth.credentials.toJson();
+  }
 }
