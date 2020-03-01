@@ -32,12 +32,7 @@ class RedditClientService {
   Future<void> authorizeClient(String authCode) async {
     reddit.auth.url(['*'], "diaporama-auth");
     await reddit.auth.authorize(authCode);
-    print(reddit.auth.credentials.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("credentials", reddit.auth.credentials.toJson());
   }
-
-  // String getCredentials() {
-  //   return _reddit.auth.credentials.toJson();
-  // }
 }

@@ -34,7 +34,6 @@ class GlobalState with ChangeNotifier {
         _redditClientService = RedditClientService(reddit: reddit);
       } else {
         print("Restore Authenticated Instance with credentials");
-        print(_credentials.toString());
         _redditClientService =
             RedditClientService.restoreInstalledFlow(_credentials);
       }
