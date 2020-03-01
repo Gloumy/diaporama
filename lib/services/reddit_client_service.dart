@@ -35,12 +35,15 @@ class RedditClientService {
   Future<void> authorizeClient(String authCode) async {
     reddit.auth.url(['*'], "diaporama-auth");
     await reddit.auth.authorize(authCode);
-    print(reddit.auth.credentials.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("credentials", reddit.auth.credentials.toJson());
   }
 
   Future<void> setUser() async {
     _user = await reddit.user.me();
+  }
+
+  void getPosts() {
+    reddit.front.fetch();
   }
 }

@@ -1,12 +1,7 @@
-import 'package:diaporama/utils/secrets.dart';
+import 'package:diaporama/widgets/drawer.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
-import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../states/global_state.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -39,42 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[Icon(Icons.slideshow), Text("Diaporama")],
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(child: Consumer<GlobalState>(
-              builder: (context, state, _) {
-                return state.redditor != null
-                    ? Text(state.redditor?.displayName)
-                    : Row(
-                        children: <Widget>[
-                          Text("Anonymous"),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          RaisedButton.icon(
-                            onPressed: () {
-                              Reddit reddit =
-                                  Reddit.createInstalledFlowInstance(
-                                clientId: redditSecret,
-                                userAgent: "diaporama-app",
-                                redirectUri:
-                                    Uri.parse("diaporama://cornet.dev"),
-                              );
-                              launch(reddit.auth
-                                  .url(["*"], "diaporama-auth").toString());
-                            },
-                            icon: Icon(Icons.person),
-                            label: Text("Login"),
-                          )
-                        ],
-                      );
-              },
-            ))
-          ],
-        ),
-      ),
+      drawer: DrawerMenu(),
       body: Container(),
     );
   }

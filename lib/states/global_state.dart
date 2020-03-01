@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:diaporama/states/posts_state.dart';
+
 class GlobalState with ChangeNotifier {
   bool _openFirstTimeModal = false;
   String _credentials;
+  bool _isAuthenticated = false;
 
   bool get openFirstTimeModal => _openFirstTimeModal;
   bool get hascredentials => _credentials != null;
@@ -15,6 +18,7 @@ class GlobalState with ChangeNotifier {
   Redditor get redditor => _redditClientService.user;
 
   RedditClientService _redditClientService;
+  PostsState _postsState;
 
   Future<void> initApp({
     String authCode,
@@ -22,6 +26,7 @@ class GlobalState with ChangeNotifier {
     if (authCode != null) {
       print("Initialize Installed Client with authCode");
       _redditClientService = RedditClientService.createInstalledFlow(authCode);
+      _isAuthenticated = true;
       await _redditClientService.authorizeClient(authCode);
       await _redditClientService.setUser();
     } else {
@@ -39,6 +44,7 @@ class GlobalState with ChangeNotifier {
         _redditClientService =
             RedditClientService.restoreInstalledFlow(_credentials);
         await _redditClientService.setUser();
+        _isAuthenticated = true;
       }
     }
 
