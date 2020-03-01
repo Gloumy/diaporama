@@ -1,4 +1,7 @@
+import 'package:diaporama/utils/secrets.dart';
+import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FirstTimeModal extends StatelessWidget {
   @override
@@ -20,7 +23,16 @@ class FirstTimeModal extends StatelessWidget {
       actions: <Widget>[
         FlatButton(
             onPressed: () => Navigator.pop(context), child: Text("Nope.")),
-        RaisedButton(onPressed: () {}, child: Text("Yes !")),
+        RaisedButton(
+            onPressed: () {
+              Reddit reddit = Reddit.createInstalledFlowInstance(
+                clientId: redditSecret,
+                userAgent: "diaporama-app",
+                redirectUri: Uri.parse("diaporama://cornet.dev"),
+              );
+              launch(reddit.auth.url(["*"], "diaporama-auth").toString());
+            },
+            child: Text("Yes !")),
       ],
     );
   }
