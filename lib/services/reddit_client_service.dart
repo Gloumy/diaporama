@@ -3,22 +3,41 @@ import 'package:draw/draw.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RedditClientService {
-  Reddit _reddit = Reddit.createInstalledFlowInstance(
-    clientId: redditSecret,
-    userAgent: "diaporama-app",
-    redirectUri: Uri.parse("diaporama://cornet.dev"),
-  );
+  final Reddit reddit;
 
-  String get authUrl => _reddit.auth.url(['*'], "diaporama").toString();
+  RedditClientService({this.reddit});
 
-  void authorizeClient(String authCode) async {
-    _reddit.auth.url(['*'], "diaporama-auth").toString();
-    await _reddit.auth.authorize(authCode);
+  String get authUrl => reddit.auth.url(['*'], "diaporama").toString();
+
+  factory RedditClientService.createInstalledFlow(String authCode) {
+    final Reddit reddit = Reddit.createInstalledFlowInstance(
+      clientId: redditSecret,
+      userAgent: "diaporama-app",
+      redirectUri: Uri.parse("diaporama://cornet.dev"),
+    );
+
+    return RedditClientService(reddit: reddit);
+  }
+
+  factory RedditClientService.restoreInstalledFlow(String credentials) {
+    final Reddit reddit = Reddit.restoreInstalledAuthenticatedInstance(
+      credentials,
+      clientId: redditSecret,
+      userAgent: "diaporama-app",
+    );
+
+    return RedditClientService(reddit: reddit);
+  }
+
+  Future<void> authorizeClient(String authCode) async {
+    reddit.auth.url(['*'], "diaporama-auth");
+    await reddit.auth.authorize(authCode);
+    print(reddit.auth.credentials.toJson());
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("credentials", _reddit.auth.credentials.toJson());
+    prefs.setString("credentials", reddit.auth.credentials.toJson());
   }
 
-  String getCredentials() {
-    return _reddit.auth.credentials.toJson();
-  }
+  // String getCredentials() {
+  //   return _reddit.auth.credentials.toJson();
+  // }
 }
