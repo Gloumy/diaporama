@@ -8,7 +8,6 @@ class GlobalState with ChangeNotifier {
   String _credentials;
 
   bool get openFirstTimeModal => _openFirstTimeModal;
-  String get credentials => _credentials;
   bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
 
@@ -19,11 +18,11 @@ class GlobalState with ChangeNotifier {
   }) async {
     if (authCode != null) {
       _redditClientService.authorizeClient(authCode);
-      await storeCredentials();
+      // await storeCredentials();
     } else {
       await checkCredentials();
-      if (_credentials != null)
-        Reddit.restoreInstalledAuthenticatedInstance(_credentials);
+      if (_credentials != null) print(_credentials);
+      // Reddit.restoreInstalledAuthenticatedInstance(_credentials);
     }
 
     notifyListeners();
@@ -37,9 +36,9 @@ class GlobalState with ChangeNotifier {
     }
   }
 
-  Future<void> storeCredentials() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _credentials = _redditClientService.getCredentials();
-    prefs.setString("credentials", _credentials);
-  }
+  // Future<void> storeCredentials() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   _credentials = _redditClientService.getCredentials();
+  //   prefs.setString("credentials", _credentials);
+  // }
 }

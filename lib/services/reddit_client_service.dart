@@ -1,5 +1,6 @@
 import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RedditClientService {
   Reddit _reddit = Reddit.createInstalledFlowInstance(
@@ -13,8 +14,8 @@ class RedditClientService {
   void authorizeClient(String authCode) async {
     _reddit.auth.url(['*'], "diaporama-auth").toString();
     await _reddit.auth.authorize(authCode);
-    Redditor user = await _reddit.user.me();
-    print(user.displayName);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("credentials", _reddit.auth.credentials.toJson());
   }
 
   String getCredentials() {
