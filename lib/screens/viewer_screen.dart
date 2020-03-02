@@ -14,11 +14,12 @@ class _ViewerScreenState extends State<ViewerScreen> {
       body: SafeArea(child: Consumer<PostsState>(
         builder: (context, state, _) {
           return PageView.builder(
-              itemCount: state.posts.length,
+              itemCount: state.contents.length,
               itemBuilder: (context, index) => Container(
                     height: double.maxFinite,
                     width: double.maxFinite,
-                    child: Image.network(state.posts[index].url),
+                    child: Image.network(
+                        state.contents[index].thumbnail.toString()),
                   ));
         },
       )),
