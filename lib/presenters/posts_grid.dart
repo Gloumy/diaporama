@@ -1,6 +1,5 @@
 import 'package:diaporama/states/posts_state.dart';
-import 'package:diaporama/widgets/media_thumbnail.dart';
-import 'package:draw/draw.dart';
+import 'package:diaporama/widgets/post_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +15,10 @@ class PostsGrid extends StatelessWidget {
             shrinkWrap: true,
             itemCount: state.contents.length,
             itemBuilder: (context, index) {
-              Submission post = state.contents[index];
-              return (post.isSelf || post.preview.isEmpty)
-                  ? Text(post.title)
-                  : MediaThumbnail(
-                      post: post,
-                    );
+              return PostThumbnail(
+                post: state.contents[index],
+                index: index,
+              );
             },
           );
         },
