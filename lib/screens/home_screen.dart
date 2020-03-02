@@ -1,3 +1,4 @@
+import 'package:diaporama/presenters/posts_grid.dart';
 import 'package:diaporama/presenters/subreddits/subreddits_dropdown.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             SubredditsDropdown(),
+            PostsGrid(),
           ],
         ),
       ),
