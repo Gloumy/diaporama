@@ -1,1 +1,1 @@
-enum PostType { SelfPost, Link, Image, Video }
+enum PostType { SelfPost, Link, Image, Video, GifVideo }
