@@ -25,7 +25,11 @@ class PostThumbnail extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ViewerScreen())),
+          context,
+          MaterialPageRoute(
+              builder: (context) => ViewerScreen(
+                    startingIndex: index,
+                  ))),
       child: child,
     );
   }
