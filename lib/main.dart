@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<GlobalState>.value(
           value: globalState,
         ),
-        ChangeNotifierProvider<PostsState>(
-          create: (context) => PostsState(),
+        ChangeNotifierProvider<PostsState>.value(
+          value: globalState.postsState,
         ),
       ],
       child: MaterialApp(

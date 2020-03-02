@@ -1,4 +1,5 @@
 import 'package:diaporama/services/reddit_client_service.dart';
+import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,11 @@ class GlobalState with ChangeNotifier {
   bool get openFirstTimeModal => _openFirstTimeModal;
   bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
+  PostsState get postsState => _postsState;
 
   RedditClientService _redditClientService;
+
+  PostsState _postsState;
 
   Future<void> initApp({
     String authCode,
@@ -38,6 +42,8 @@ class GlobalState with ChangeNotifier {
             RedditClientService.restoreInstalledFlow(_credentials);
       }
     }
+
+    _postsState = PostsState(redditService: _redditClientService);
 
     notifyListeners();
   }
