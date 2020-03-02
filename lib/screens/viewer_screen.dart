@@ -50,6 +50,17 @@ class _ViewerScreenState extends State<ViewerScreen> {
                           textAlign: TextAlign.center,
                         )),
                       ),
+                      Row(
+                        children: <Widget>[
+                          Chip(
+                            label: Text("r/${post.subreddit.displayName}"),
+                          ),
+                          if (post.over18)
+                            Chip(
+                              label: Text("18+"),
+                            )
+                        ],
+                      ),
                       PostContent(post: post),
                     ],
                   ),
