@@ -17,7 +17,7 @@ class PostsGrid extends StatelessWidget {
             itemCount: state.contents.length,
             itemBuilder: (context, index) {
               Submission post = state.contents[index];
-              return post.isSelf
+              return (post.isSelf || post.preview.isEmpty)
                   ? Text(post.title)
                   : MediaThumbnail(
                       post: post,
