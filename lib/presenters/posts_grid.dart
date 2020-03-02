@@ -1,5 +1,3 @@
-import 'package:diaporama/models/post.dart';
-import 'package:diaporama/screens/viewer_screen.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/widgets/media_thumbnail.dart';
 import 'package:draw/draw.dart';

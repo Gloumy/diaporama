@@ -1,7 +1,5 @@
-import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SubredditsDropdown extends StatelessWidget {
   @override
@@ -29,10 +27,7 @@ class SubredditsDropdown extends StatelessWidget {
         color: redditOrange,
       ),
       iconEnabledColor: redditOrange,
-      onChanged: (value) {
-        Provider.of<PostsState>(context, listen: false)
-            .retrievePosts("popular");
-      },
+      onChanged: (value) {},
     );
   }
 }
