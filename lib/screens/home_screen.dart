@@ -1,3 +1,4 @@
+import 'package:diaporama/presenters/subreddits/subreddits_dropdown.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(icon: Icon(Icons.settings), onPressed: () {})
         ],
       ),
-      body: Container(),
+      body: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: Column(
+          children: <Widget>[
+            SubredditsDropdown(),
+          ],
+        ),
+      ),
     );
   }
 }
