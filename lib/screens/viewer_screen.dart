@@ -1,4 +1,7 @@
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/utils/colors.dart';
+import 'package:diaporama/widgets/post_content.dart';
+import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,12 +33,28 @@ class _ViewerScreenState extends State<ViewerScreen> {
           return PageView.builder(
               controller: _controller,
               itemCount: state.contents.length,
-              itemBuilder: (context, index) => Container(
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    child: Image.network(
-                        state.contents[index].thumbnail.toString()),
-                  ));
+              itemBuilder: (context, index) {
+                Submission post = state.contents[index];
+
+                return SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        constraints: BoxConstraints(minHeight: 70.0),
+                        color: darkGreyColor,
+                        child: Center(
+                            child: Text(
+                          post.title,
+                          style: TextStyle(fontSize: 24, color: lightGreyColor),
+                          textAlign: TextAlign.center,
+                        )),
+                      ),
+                      PostContent(post: post),
+                    ],
+                  ),
+                );
+              });
         },
       )),
     );
