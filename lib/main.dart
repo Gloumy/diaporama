@@ -1,6 +1,7 @@
 import 'package:diaporama/screens/home_screen.dart';
 import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/utils/base_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
@@ -42,6 +43,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Diaporama',
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.dark,
         home: HomeScreen(),
       ),
     );
