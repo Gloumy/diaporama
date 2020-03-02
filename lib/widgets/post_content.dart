@@ -1,3 +1,4 @@
+import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class _PostContentState extends State<PostContent> {
   Submission get _post => widget.post;
 
   VideoPlayerController _playerController;
+  ChewieController _chewieController;
   Future<void> _initializeVideoPlayerFuture;
 
   @override
@@ -30,7 +32,12 @@ class _PostContentState extends State<PostContent> {
     if (getPostType() == PostType.GifVideo) {
       Uri videoUrl = VideoProvider.fromUri(_post.url).getVideos().first.uri;
       _playerController = VideoPlayerController.network(videoUrl.toString());
-      _initializeVideoPlayerFuture = _playerController.initialize();
+      _playerController.initialize();
+      _chewieController = ChewieController(
+        videoPlayerController: _playerController,
+        aspectRatio: _playerController.value.aspectRatio,
+        allowedScreenSleep: false,
+      );
     }
   }
 
@@ -78,30 +85,8 @@ class _PostContentState extends State<PostContent> {
         );
         break;
       case PostType.GifVideo:
-        widget = FutureBuilder(
-          future: _initializeVideoPlayerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // If the VideoPlayerController has finished initialization, use
-              // the data it provides to limit the aspect ratio of the VideoPlayer.
-              return Column(
-                children: <Widget>[
-                  AspectRatio(
-                    aspectRatio: _playerController.value.aspectRatio,
-                    // Use the VideoPlayer widget to display the video.
-                    child: VideoPlayer(_playerController),
-                  ),
-                  RaisedButton(
-                      onPressed: () => _playerController.play(),
-                      child: Icon(Icons.play_arrow)),
-                ],
-              );
-            } else {
-              // If the VideoPlayerController is still initializing, show a
-              // loading spinner.
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+        widget = Chewie(
+          controller: _chewieController,
         );
         break;
       case PostType.Image:
@@ -131,6 +116,7 @@ class _PostContentState extends State<PostContent> {
   @override
   void dispose() {
     _playerController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 }
