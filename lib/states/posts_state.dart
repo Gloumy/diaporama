@@ -10,18 +10,28 @@ class PostsState with ChangeNotifier {
 
   StreamController<UserContent> streamController;
   List<Submission> _contents = [];
+  bool _isLoading = false;
 
   List<Submission> get contents => List.from(_contents);
+  bool get isLoading => _isLoading;
 
   void loadPosts() {
+    setBusy();
     streamController = StreamController.broadcast();
     _contents.clear();
 
     streamController.stream.listen((post) {
       _contents.add(post);
-    }, onDone: () => notifyListeners());
+    }, onDone: () {
+      setBusy(value: false);
+    });
 
     redditService.reddit.front.hot().pipe(streamController);
+  }
+
+  void setBusy({bool value = true}) {
+    _isLoading = value;
+    notifyListeners();
   }
 
   @override
