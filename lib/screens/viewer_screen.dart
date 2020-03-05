@@ -77,7 +77,10 @@ class _ViewerScreenState extends State<ViewerScreen> {
                           )
                         ],
                       ),
-                      if (_displayComments) PostCommentsList()
+                      if (_displayComments)
+                        PostCommentsList(
+                          post: post,
+                        )
                     ],
                   ),
                 );
