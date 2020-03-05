@@ -18,8 +18,6 @@ class ViewerScreen extends StatefulWidget {
 class _ViewerScreenState extends State<ViewerScreen> {
   PageController _controller;
 
-  bool _displayComments = false;
-
   @override
   void initState() {
     _controller = PageController(
@@ -65,22 +63,9 @@ class _ViewerScreenState extends State<ViewerScreen> {
                         ],
                       ),
                       PostContent(post: post),
-                      Row(
-                        children: <Widget>[
-                          RaisedButton(
-                            onPressed: () {
-                              setState(() {
-                                _displayComments = true;
-                              });
-                            },
-                            child: Text("Load comments"),
-                          )
-                        ],
-                      ),
-                      if (_displayComments)
-                        PostCommentsList(
-                          post: post,
-                        )
+                      PostCommentsList(
+                        post: post,
+                      )
                     ],
                   ),
                 );
