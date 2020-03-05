@@ -1,5 +1,6 @@
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
+import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,8 @@ class ViewerScreen extends StatefulWidget {
 
 class _ViewerScreenState extends State<ViewerScreen> {
   PageController _controller;
+
+  bool _displayComments = false;
 
   @override
   void initState() {
@@ -62,6 +65,19 @@ class _ViewerScreenState extends State<ViewerScreen> {
                         ],
                       ),
                       PostContent(post: post),
+                      Row(
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              setState(() {
+                                _displayComments = true;
+                              });
+                            },
+                            child: Text("Load comments"),
+                          )
+                        ],
+                      ),
+                      if (_displayComments) PostCommentsList()
                     ],
                   ),
                 );
