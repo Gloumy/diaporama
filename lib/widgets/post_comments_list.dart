@@ -1,3 +1,4 @@
+import 'package:diaporama/widgets/comment_widget.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,14 @@ class _PostCommentsListState extends State<PostCommentsList> {
         future: initComments(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Text(snapshot.data.comments.length.toString());
+            List<Widget> nestedComments = [];
+            _getNestedComments(snapshot.data.comments, nestedComments, 0);
+            return Column(
+              children: List.generate(
+                nestedComments.length,
+                (index) => nestedComments[index],
+              ),
+            );
           } else {
             if (snapshot.hasError) {
               print(snapshot.error);
@@ -35,5 +43,19 @@ class _PostCommentsListState extends State<PostCommentsList> {
             );
           }
         });
+  }
+
+  //Thanks @Patte1808 for implementation
+  void _getNestedComments(List replies, List widgets, int level) {
+    level++;
+    replies.forEach((reply) {
+      if (reply is Comment) {
+        widgets.add(CommentWidget(reply, level));
+
+        if (reply.replies != null) {
+          _getNestedComments(reply.replies.comments, widgets, level);
+        }
+      }
+    });
   }
 }
