@@ -13,7 +13,8 @@ class ContentSourceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<PostsState>(context, listen: false).loadPosts();
+        Provider.of<PostsState>(context, listen: false)
+            .loadPosts(source: source.name);
         Navigator.push(
             context,
             MaterialPageRoute(

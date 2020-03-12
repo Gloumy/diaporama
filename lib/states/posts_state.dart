@@ -22,10 +22,14 @@ class PostsState with ChangeNotifier {
   List<Submission> get contents => List.from(_contents);
   bool get isLoading => _isLoading;
 
-  void loadPosts() {
+  void loadPosts({
+    String source,
+    int limit = 20,
+  }) {
     setBusy();
     streamController = StreamController.broadcast();
     _contents.clear();
+    notifyListeners();
 
     streamController.stream.listen((post) {
       _contents.add(post);
@@ -33,7 +37,17 @@ class PostsState with ChangeNotifier {
       setBusy(value: false);
     });
 
-    redditService.reddit.front.hot().pipe(streamController);
+    switch (source) {
+      case "frontpage":
+        redditService.reddit.front.hot(limit: limit).pipe(streamController);
+        break;
+      default:
+        redditService.reddit
+            .subreddit(source)
+            .hot(limit: limit)
+            .pipe(streamController);
+        break;
+    }
   }
 
   void setBusy({bool value = true}) {
