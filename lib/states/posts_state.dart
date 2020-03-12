@@ -26,10 +26,12 @@ class PostsState with ChangeNotifier {
   void loadPosts({
     ContentSource source,
     int limit = 20,
+    bool loadMore = false,
   }) {
     setBusy();
+    source = source ?? _selectedSource;
     streamController = StreamController.broadcast();
-    _contents.clear();
+    if (!loadMore) _contents.clear();
     _setSelectedSource(source);
     notifyListeners();
 
@@ -39,14 +41,24 @@ class PostsState with ChangeNotifier {
       setBusy(value: false);
     });
 
+    String after = loadMore ? _contents.last.fullname : null;
+
     switch (source.name) {
       case "frontpage":
-        redditService.reddit.front.hot(limit: limit).pipe(streamController);
+        redditService.reddit.front
+            .hot(
+              limit: limit,
+              after: after,
+            )
+            .pipe(streamController);
         break;
       default:
         redditService.reddit
             .subreddit(source.name)
-            .hot(limit: limit)
+            .hot(
+              limit: limit,
+              after: after,
+            )
             .pipe(streamController);
         break;
     }

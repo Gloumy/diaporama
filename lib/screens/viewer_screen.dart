@@ -36,7 +36,7 @@ class _ViewerScreenState extends State<ViewerScreen> {
               itemCount: state.contents.length,
               itemBuilder: (context, index) {
                 Submission post = state.contents[index];
-
+                bool loadMore = index > state.contents.length - 10;
                 return SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
@@ -62,7 +62,10 @@ class _ViewerScreenState extends State<ViewerScreen> {
                             )
                         ],
                       ),
-                      PostContent(post: post),
+                      PostContent(
+                        post: post,
+                        loadMore: loadMore,
+                      ),
                       PostCommentsList(
                         post: post,
                       )

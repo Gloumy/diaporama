@@ -1,15 +1,22 @@
 import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
+import 'package:diaporama/states/posts_state.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_provider/video_provider.dart';
 
 class PostContent extends StatefulWidget {
   final Submission post;
+  final bool loadMore;
 
-  const PostContent({Key key, this.post}) : super(key: key);
+  const PostContent({
+    Key key,
+    this.post,
+    this.loadMore,
+  }) : super(key: key);
 
   @override
   _PostContentState createState() => _PostContentState();
@@ -17,6 +24,7 @@ class PostContent extends StatefulWidget {
 
 class _PostContentState extends State<PostContent> {
   Submission get _post => widget.post;
+  bool get _loadMore => widget.loadMore;
 
   VideoPlayerController _playerController;
   ChewieController _chewieController;
@@ -39,6 +47,9 @@ class _PostContentState extends State<PostContent> {
         allowedScreenSleep: false,
       );
     }
+    print(_loadMore);
+    if (_loadMore)
+      Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
   }
 
   PostType getPostType() {
