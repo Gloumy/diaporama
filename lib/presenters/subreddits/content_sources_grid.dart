@@ -8,18 +8,22 @@ class ContentSourcesGrid extends StatelessWidget {
     return Consumer<PostsState>(
       builder: (context, state, _) {
         return GridView.builder(
-          itemCount: state.contentSources.length,
+          itemCount: state.contentSources.length + 1,
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
           itemBuilder: (context, index) {
-            return Card(
-              child: Center(
-                child: Text(
-                  state.contentSources[index].name,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            );
+            return index < state.contentSources.length
+                ? Card(
+                    child: Center(
+                      child: Text(
+                        state.contentSources[index].name,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                : Card(
+                    child: Center(child: Text("+")),
+                  );
           },
         );
       },
