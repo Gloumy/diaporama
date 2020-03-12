@@ -1,9 +1,6 @@
-import 'package:diaporama/presenters/posts_grid.dart';
-import 'package:diaporama/presenters/subreddits/subreddits_dropdown.dart';
-import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/presenters/subreddits/content_sources_grid.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -46,19 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         height: double.maxFinite,
         width: double.maxFinite,
-        child: Column(
-          children: <Widget>[
-            SubredditsDropdown(),
-            Selector<PostsState, bool>(
-              selector: (context, state) => state.isLoading,
-              builder: (context, isLoading, _) {
-                return isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : PostsGrid();
-              },
-            )
-          ],
-        ),
+        child: ContentSourcesGrid(),
       ),
     );
   }

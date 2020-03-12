@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:diaporama/models/content_source.dart';
 import 'package:diaporama/services/reddit_client_service.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,12 @@ class PostsState with ChangeNotifier {
   StreamController<UserContent> streamController;
   List<Submission> _contents = [];
   bool _isLoading = false;
+
+  List<ContentSource> contentSources = [
+    ContentSource(name: "Front Page"),
+    ContentSource(name: "Popular"),
+    ContentSource(name: "ImGoingToHellForThis"),
+  ];
 
   List<Submission> get contents => List.from(_contents);
   bool get isLoading => _isLoading;
