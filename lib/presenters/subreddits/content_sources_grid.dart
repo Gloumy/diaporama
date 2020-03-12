@@ -1,4 +1,5 @@
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/widgets/content_source_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +14,7 @@ class ContentSourcesGrid extends StatelessWidget {
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
           itemBuilder: (context, index) {
             return index < state.contentSources.length
-                ? Card(
-                    child: Center(
-                      child: Text(
-                        state.contentSources[index].name,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
+                ? ContentSourceCard(source: state.contentSources[index])
                 : Card(
                     child: Center(child: Text("+")),
                   );

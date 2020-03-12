@@ -14,9 +14,9 @@ class PostsState with ChangeNotifier {
   bool _isLoading = false;
 
   List<ContentSource> contentSources = [
-    ContentSource(name: "Front Page"),
-    ContentSource(name: "Popular"),
-    ContentSource(name: "ImGoingToHellForThis"),
+    ContentSource(label: "Front Page", name: "frontpage"),
+    ContentSource(label: "Popular", name: "popular"),
+    ContentSource(label: "ImGoingToHellForThis", name: "imgoingtohellforthis"),
   ];
 
   List<Submission> get contents => List.from(_contents);
