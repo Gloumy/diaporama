@@ -1,6 +1,5 @@
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
-import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -66,9 +65,6 @@ class _ViewerScreenState extends State<ViewerScreen> {
                         post: post,
                         loadMore: loadMore,
                       ),
-                      PostCommentsList(
-                        post: post,
-                      )
                     ],
                   ),
                 );

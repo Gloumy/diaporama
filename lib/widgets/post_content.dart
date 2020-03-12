@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class PostContent extends StatefulWidget {
 class _PostContentState extends State<PostContent> {
   Submission get _post => widget.post;
   bool get _loadMore => widget.loadMore;
+  bool _showComments = false;
 
   VideoPlayerController _playerController;
   ChewieController _chewieController;
@@ -47,7 +49,11 @@ class _PostContentState extends State<PostContent> {
         allowedScreenSleep: false,
       );
     }
-    print(_loadMore);
+    if (getPostType() == PostType.SelfPost || getPostType() == PostType.Link) {
+      setState(() {
+        _showComments = true;
+      });
+    }
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
   }
@@ -121,7 +127,28 @@ class _PostContentState extends State<PostContent> {
         throw "Unsupported post type";
     }
 
-    return widget;
+    return Column(children: [
+      widget,
+      GestureDetector(
+        onTap: () {
+          setState(() {
+            _showComments = true;
+          });
+        },
+        child: Container(
+          width: double.maxFinite,
+          height: 35,
+          color: Colors.black45,
+          child: Center(
+            child: Text("Show Comments", style: TextStyle(color: Colors.white)),
+          ),
+        ),
+      ),
+      if (_showComments)
+        PostCommentsList(
+          post: _post,
+        )
+    ]);
   }
 
   @override
