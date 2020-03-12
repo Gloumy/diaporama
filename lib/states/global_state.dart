@@ -44,8 +44,7 @@ class GlobalState with ChangeNotifier {
     }
 
     _postsState = PostsState(redditService: _redditClientService);
-    _postsState.loadPosts();
-    
+
     notifyListeners();
   }
 
