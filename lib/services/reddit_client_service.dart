@@ -7,7 +7,10 @@ class RedditClientService {
 
   RedditClientService({this.reddit});
 
+  String _username;
+
   String get authUrl => reddit.auth.url(['*'], "diaporama").toString();
+  String get username => _username;
 
   factory RedditClientService.createInstalledFlow(String authCode) {
     final Reddit reddit = Reddit.createInstalledFlowInstance(

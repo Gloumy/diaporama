@@ -13,6 +13,7 @@ class GlobalState with ChangeNotifier {
   bool get openFirstTimeModal => _openFirstTimeModal;
   bool get hascredentials => _credentials != null;
   String get authUrl => _redditClientService.authUrl;
+  String get username => _redditClientService.username;
   PostsState get postsState => _postsState;
 
   RedditClientService _redditClientService;
