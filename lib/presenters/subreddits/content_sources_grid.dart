@@ -6,21 +6,25 @@ import 'package:provider/provider.dart';
 class ContentSourcesGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostsState>(
-      builder: (context, state, _) {
-        return GridView.builder(
-          itemCount: state.contentSources.length + 1,
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-          itemBuilder: (context, index) {
-            return index < state.contentSources.length
-                ? ContentSourceCard(source: state.contentSources[index])
-                : Card(
-                    child: Center(child: Text("+")),
-                  );
-          },
-        );
-      },
+    return Container(
+      height: double.maxFinite,
+      width: double.maxFinite,
+      child: Consumer<PostsState>(
+        builder: (context, state, _) {
+          return GridView.builder(
+            itemCount: state.contentSources.length + 1,
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+            itemBuilder: (context, index) {
+              return index < state.contentSources.length
+                  ? ContentSourceCard(source: state.contentSources[index])
+                  : Card(
+                      child: Center(child: Text("+")),
+                    );
+            },
+          );
+        },
+      ),
     );
   }
 }
