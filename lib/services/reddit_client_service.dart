@@ -38,4 +38,9 @@ class RedditClientService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("credentials", reddit.auth.credentials.toJson());
   }
+
+  Future<void> setUsername() async {
+    Redditor redditor = await reddit.user.me();
+    _username = redditor.displayName;
+  }
 }

@@ -27,6 +27,7 @@ class GlobalState with ChangeNotifier {
       print("Initialize Installed Client with authCode");
       _redditClientService = RedditClientService.createInstalledFlow(authCode);
       await _redditClientService.authorizeClient(authCode);
+      await _redditClientService.setUsername();
     } else {
       await checkCredentials();
       if (_credentials == null) {
@@ -41,6 +42,7 @@ class GlobalState with ChangeNotifier {
         print("Restore Authenticated Instance with credentials");
         _redditClientService =
             RedditClientService.restoreInstalledFlow(_credentials);
+        await _redditClientService.setUsername();
       }
     }
 
