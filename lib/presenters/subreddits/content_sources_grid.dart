@@ -1,4 +1,5 @@
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/widgets/add_new_source_card.dart';
 import 'package:diaporama/widgets/content_source_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +19,7 @@ class ContentSourcesGrid extends StatelessWidget {
             itemBuilder: (context, index) {
               return index < state.contentSources.length
                   ? ContentSourceCard(source: state.contentSources[index])
-                  : Card(
-                      child: Center(child: Text("+")),
-                    );
+                  : AddNewSourceCard();
             },
           );
         },
