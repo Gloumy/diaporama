@@ -1,5 +1,6 @@
 import 'package:diaporama/states/subreddits_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
 class AddSourceScreen extends StatefulWidget {
@@ -11,17 +12,11 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
   TextEditingController _searchController = TextEditingController();
 
-  void _searchListener() async {
+  Future<List<String>> _searchListener(String query) async {
     List<String> subs =
         await Provider.of<SubredditsState>(context, listen: false)
-            .searchSubreddit(_searchController.text);
-    print(subs);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_searchListener);
+            .searchSubreddit(query);
+    return subs;
   }
 
   @override
@@ -40,9 +35,21 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            TextFormField(
-              controller: _searchController,
-            ),
+            // TextFormField(
+            //   controller: _searchController,
+            // ),
+            TypeAheadField(
+                suggestionsCallback: (value) async =>
+                    await _searchListener(value),
+                itemBuilder: (context, value) {
+                  return Text(value);
+                },
+                onSuggestionSelected: (value) {
+                  setState(() {
+                    _subreddits.add(value);
+                  });
+                }),
+            for (String sub in _subreddits) Text(sub)
           ],
         ),
       ),
