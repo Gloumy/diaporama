@@ -14,6 +14,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
   String _subreddit;
   bool _multiple = false;
+  TextEditingController _searchController = TextEditingController();
 
   Future<List<String>> _searchListener(String query) async {
     List<String> subs =
@@ -54,7 +55,23 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                 });
               },
             ),
+            SizedBox(
+              height: 15.0,
+            ),
             TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                        color: blueColor,
+                      )),
+                      suffixIcon: Icon(Icons.search),
+                      prefixIcon: GestureDetector(
+                        child: Icon(Icons.cancel),
+                        onTap: () => _searchController.clear(),
+                      )),
+                  controller: _searchController,
+                ),
                 suggestionsCallback: (value) async =>
                     await _searchListener(value),
                 itemBuilder: (context, value) {
