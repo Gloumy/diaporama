@@ -12,6 +12,7 @@ class AddSourceScreen extends StatefulWidget {
 
 class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
+  String _subreddit;
   bool _multiple = false;
 
   Future<List<String>> _searchListener(String query) async {
@@ -62,9 +63,11 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                 onSuggestionSelected: (value) {
                   setState(() {
                     _subreddits.add(value);
+                    _subreddit = value;
                   });
                 }),
-            for (String sub in _subreddits) Text(sub)
+            if (_multiple) for (String sub in _subreddits) Text(sub),
+            if (!_multiple) Text(_subreddit ?? ""),
           ],
         ),
       ),
