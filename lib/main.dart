@@ -1,6 +1,7 @@
 import 'package:diaporama/screens/home_screen.dart';
 import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/states/subreddits_state.dart';
 import 'package:diaporama/utils/base_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<PostsState>.value(
           value: globalState.postsState,
+        ),
+        ChangeNotifierProvider<SubredditsState>.value(
+          value: globalState.subredditsState,
         ),
       ],
       child: MaterialApp(

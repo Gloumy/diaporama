@@ -1,5 +1,6 @@
 import 'package:diaporama/services/reddit_client_service.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/states/subreddits_state.dart';
 import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,12 @@ class GlobalState with ChangeNotifier {
   String get authUrl => _redditClientService.authUrl;
   String get username => _redditClientService.username;
   PostsState get postsState => _postsState;
+  SubredditsState get subredditsState => _subredditsState;
 
   RedditClientService _redditClientService;
 
   PostsState _postsState;
+  SubredditsState _subredditsState;
 
   Future<void> initApp({
     String authCode,
@@ -47,6 +50,7 @@ class GlobalState with ChangeNotifier {
     }
 
     _postsState = PostsState(redditService: _redditClientService);
+    _subredditsState = SubredditsState(redditService: _redditClientService);
 
     notifyListeners();
   }
