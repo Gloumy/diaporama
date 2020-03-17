@@ -1,7 +1,9 @@
 import 'package:diaporama/states/subreddits_state.dart';
+import 'package:diaporama/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class AddSourceScreen extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class AddSourceScreen extends StatefulWidget {
 
 class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
-  TextEditingController _searchController = TextEditingController();
+  bool _multiple = false;
 
   Future<List<String>> _searchListener(String query) async {
     List<String> subs =
@@ -33,11 +35,24 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
             onPressed: () => Navigator.pop(context)),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 25,
+        ),
         child: Column(
           children: <Widget>[
-            // TextFormField(
-            //   controller: _searchController,
-            // ),
+            ToggleSwitch(
+              activeBgColor: redditOrange,
+              activeTextColor: lightGreyColor,
+              inactiveBgColor: darkGreyColor,
+              inactiveTextColor: mediumGreyColor,
+              labels: ["Subreddit", "Multireddit"],
+              onToggle: (index) {
+                setState(() {
+                  _multiple = index == 0 ? false : true;
+                });
+              },
+            ),
             TypeAheadField(
                 suggestionsCallback: (value) async =>
                     await _searchListener(value),
