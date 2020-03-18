@@ -12,6 +12,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GlobalState globalState = GlobalState();
 
+  await HiveService.initHive();
+
   try {
     Uri initialLink = await getInitialUri();
     if (initialLink != null && initialLink.queryParameters["code"] != null) {
@@ -19,11 +21,10 @@ void main() async {
     } else {
       await globalState.initApp();
     }
+    await globalState.subredditsState.retrieveSources();
   } catch (e) {
     throw (e);
   }
-
-  HiveService.initHive();
 
   runApp(MyApp(
     globalState: globalState,

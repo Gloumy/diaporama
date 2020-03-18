@@ -1,11 +1,22 @@
+import 'package:diaporama/models/content_source.dart';
 import 'package:diaporama/services/reddit_client_service.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class SubredditsState with ChangeNotifier {
   final RedditClientService redditService;
 
+  List<ContentSource> _sources = [
+    ContentSource(name: "frontpage", label: "Front Page")
+  ];
+
   SubredditsState({@required this.redditService});
+
+  Future<void> retrieveSources() async {
+    var box = Hive.box<ContentSource>("sources");
+    box.values.forEach((s) => _sources.add(s));
+  }
 
   Future<List<String>> searchSubreddit(String query) async {
     List<SubredditRef> subs =
