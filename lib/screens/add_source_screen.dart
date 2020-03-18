@@ -3,7 +3,6 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class AddSourceScreen extends StatefulWidget {
   @override
@@ -12,9 +11,8 @@ class AddSourceScreen extends StatefulWidget {
 
 class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
-  String _subreddit;
-  bool _multiple = false;
   TextEditingController _searchController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
 
   Future<List<String>> _searchListener(String query) async {
     List<String> subs =
@@ -42,18 +40,11 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
           horizontal: 25,
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            ToggleSwitch(
-              activeBgColor: redditOrange,
-              activeTextColor: lightGreyColor,
-              inactiveBgColor: darkGreyColor,
-              inactiveTextColor: mediumGreyColor,
-              labels: ["Subreddit", "Multireddit"],
-              onToggle: (index) {
-                setState(() {
-                  _multiple = index == 0 ? false : true;
-                });
-              },
+            TextFormField(
+              decoration: InputDecoration(labelText: "Source name"),
+              controller: _nameController,
             ),
             SizedBox(
               height: 15.0,
@@ -61,6 +52,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
             TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
                   decoration: InputDecoration(
+                      labelText: "Subreddits",
                       border: OutlineInputBorder(
                           borderSide: BorderSide(
                         color: blueColor,
@@ -80,13 +72,23 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                 onSuggestionSelected: (value) {
                   setState(() {
                     _subreddits.add(value);
-                    _subreddit = value;
                   });
                 }),
-            if (_multiple) for (String sub in _subreddits) Text(sub),
-            if (!_multiple) Text(_subreddit ?? ""),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "Selected subreddits",
+              style: TextStyle(fontSize: 18),
+            ),
+            for (String sub in _subreddits) Text(sub),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: blueColor,
+        child: Icon(Icons.check),
       ),
     );
   }
