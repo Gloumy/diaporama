@@ -101,7 +101,13 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          String subredditsString = _subreddits.join("+");
+          String label = _nameController.text;
+          Provider.of<SubredditsState>(context, listen: false)
+              .addSource(label: label, subredditsString: subredditsString);
+          Navigator.pop(context);
+        },
         backgroundColor: blueColor,
         child: Icon(Icons.check),
       ),

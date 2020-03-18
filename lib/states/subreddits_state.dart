@@ -26,4 +26,19 @@ class SubredditsState with ChangeNotifier {
     List<String> subsNames = subs.map((s) => s.displayName).toList();
     return subsNames;
   }
+
+  Future<void> addSource({
+    @required String label,
+    @required String subredditsString,
+  }) async {
+    ContentSource newSource = ContentSource(
+      subredditsString: subredditsString,
+      label: label,
+    );
+    var box = Hive.box<ContentSource>("sources");
+    await box.add(newSource);
+    _sources.add(newSource);
+
+    notifyListeners();
+  }
 }
