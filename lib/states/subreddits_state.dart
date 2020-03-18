@@ -8,7 +8,7 @@ class SubredditsState with ChangeNotifier {
   final RedditClientService redditService;
 
   List<ContentSource> _sources = [
-    ContentSource(name: "frontpage", label: "Front Page")
+    ContentSource(subredditsString: "frontpage", label: "Front Page")
   ];
 
   List<ContentSource> get contentSources => List.from(_sources);

@@ -9,13 +9,13 @@ enum SourceType { Subreddit, MultiReddit }
 class ContentSource extends HiveObject {
   @HiveField(0)
   final String
-      name; // Will contain the subreddits, should change for a better name later
+      subredditsString; // Contain the names of the subreddits
   @HiveField(1)
   final String label; // Used for displaying on source card
   final SourceType type;
 
   ContentSource({
-    @required this.name,
+    @required this.subredditsString,
     @required this.label,
     this.type = SourceType.Subreddit,
   });

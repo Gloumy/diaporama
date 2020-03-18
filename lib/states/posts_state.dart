@@ -37,7 +37,7 @@ class PostsState with ChangeNotifier {
 
     String after = loadMore ? _contents.last.fullname : null;
 
-    switch (source.name) {
+    switch (source.subredditsString) {
       case "frontpage":
         redditService.reddit.front
             .hot(
@@ -48,7 +48,7 @@ class PostsState with ChangeNotifier {
         break;
       default:
         redditService.reddit
-            .subreddit(source.name)
+            .subreddit(source.subredditsString)
             .hot(
               limit: limit,
               after: after,

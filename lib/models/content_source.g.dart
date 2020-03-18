@@ -17,7 +17,7 @@ class ContentSourceAdapter extends TypeAdapter<ContentSource> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ContentSource(
-      name: fields[0] as String,
+      subredditsString: fields[0] as String,
       label: fields[1] as String,
     );
   }
@@ -27,7 +27,7 @@ class ContentSourceAdapter extends TypeAdapter<ContentSource> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.subredditsString)
       ..writeByte(1)
       ..write(obj.label);
   }
