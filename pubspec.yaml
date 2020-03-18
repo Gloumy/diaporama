@@ -32,7 +32,9 @@ dependencies:
   chewie: ^0.9.8+1 # Better looking player built upon video_player
   flutter_markdown: ^0.3.4
   flutter_typeahead: ^1.8.0
-  toggle_switch: ^0.1.4
+  hive: ^1.4.1+1
+  hive_flutter: ^0.3.0+2
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,6 +43,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^0.7.0+2
+  build_runner: ^1.8.0
 
 
 # For information on the generic Dart part of this file, see the
