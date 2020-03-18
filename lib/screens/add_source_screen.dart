@@ -13,6 +13,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
   List<String> _subreddits = [];
   TextEditingController _searchController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Future<List<String>> _searchListener(String query) async {
     List<String> subs =
@@ -39,69 +40,83 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
           vertical: 15,
           horizontal: 25,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: "Source name"),
-              controller: _nameController,
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            TypeAheadField(
-                textFieldConfiguration: TextFieldConfiguration(
-                  decoration: InputDecoration(
-                      labelText: "Subreddits",
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                        color: blueColor,
-                      )),
-                      suffixIcon: Icon(Icons.search),
-                      prefixIcon: GestureDetector(
-                        child: Icon(Icons.cancel),
-                        onTap: () => _searchController.clear(),
-                      )),
-                  controller: _searchController,
-                ),
-                suggestionsCallback: (value) async =>
-                    await _searchListener(value),
-                itemBuilder: (context, value) {
-                  return Text(value);
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: "Source name"),
+                controller: _nameController,
+                validator: (value) {
+                  if (value.isEmpty) return "Required";
+                  return null;
                 },
-                onSuggestionSelected: (value) {
-                  setState(() {
-                    _subreddits.add(value);
-                  });
-                }),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              "Selected subreddits",
-              style: TextStyle(fontSize: 18),
-            ),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                for (String sub in _subreddits)
-                  ListTile(
-                    title: Text(sub),
-                    leading: IconButton(
-                        icon: Icon(Icons.remove_circle),
-                        onPressed: () {
-                          setState(() {
-                            _subreddits.remove(sub);
-                          });
-                        }),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    decoration: InputDecoration(
+                        labelText: "Subreddits",
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                          color: blueColor,
+                        )),
+                        suffixIcon: Icon(Icons.search),
+                        prefixIcon: GestureDetector(
+                          child: Icon(Icons.cancel),
+                          onTap: () => _searchController.clear(),
+                        )),
+                    controller: _searchController,
                   ),
-              ],
-            )
-          ],
+                  suggestionsCallback: (value) async =>
+                      await _searchListener(value),
+                  itemBuilder: (context, value) {
+                    return Text(value);
+                  },
+                  onSuggestionSelected: (value) {
+                    setState(() {
+                      _subreddits.add(value);
+                    });
+                  }),
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                "Selected subreddits",
+                style: TextStyle(fontSize: 18),
+              ),
+              if (_subreddits.isEmpty)
+                Text(
+                  "Select at least one subreddit",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  for (String sub in _subreddits)
+                    ListTile(
+                      title: Text(sub),
+                      leading: IconButton(
+                          icon: Icon(Icons.remove_circle),
+                          onPressed: () {
+                            setState(() {
+                              _subreddits.remove(sub);
+                            });
+                          }),
+                    ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          _formKey.currentState.save();
+          if (!_formKey.currentState.validate() || _subreddits.isEmpty) return;
           String subredditsString = _subreddits.join("+");
           String label = _nameController.text;
           Provider.of<SubredditsState>(context, listen: false)
