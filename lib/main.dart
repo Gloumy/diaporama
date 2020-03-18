@@ -1,4 +1,5 @@
 import 'package:diaporama/screens/home_screen.dart';
+import 'package:diaporama/services/hive_service.dart';
 import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/states/subreddits_state.dart';
@@ -21,6 +22,9 @@ void main() async {
   } catch (e) {
     throw (e);
   }
+
+  HiveService.initHive();
+
   runApp(MyApp(
     globalState: globalState,
   ));
