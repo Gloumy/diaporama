@@ -81,7 +81,22 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
               "Selected subreddits",
               style: TextStyle(fontSize: 18),
             ),
-            for (String sub in _subreddits) Text(sub),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                for (String sub in _subreddits)
+                  ListTile(
+                    title: Text(sub),
+                    leading: IconButton(
+                        icon: Icon(Icons.remove_circle),
+                        onPressed: () {
+                          setState(() {
+                            _subreddits.remove(sub);
+                          });
+                        }),
+                  ),
+              ],
+            )
           ],
         ),
       ),
