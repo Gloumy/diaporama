@@ -11,7 +11,7 @@ class HiveService {
 
   HiveService._internal();
 
-  static void initHive() async {
+  static Future<void> initHive() async {
     await Hive.initFlutter();
     Hive.registerAdapter(ContentSourceAdapter());
     await Hive.openBox<ContentSource>("sources");
