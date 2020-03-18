@@ -41,4 +41,14 @@ class SubredditsState with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> removeSource(ContentSource source) async {
+    var box = Hive.box<ContentSource>("sources");
+    box.values
+        .firstWhere((s) => s.subredditsString == source.subredditsString)
+        .delete();
+    _sources.remove(source);
+
+    notifyListeners();
+  }
 }

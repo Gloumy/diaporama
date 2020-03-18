@@ -1,6 +1,8 @@
 import 'package:diaporama/models/content_source.dart';
 import 'package:diaporama/screens/viewer_screen.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/states/subreddits_state.dart';
+import 'package:diaporama/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +23,33 @@ class ContentSourceCard extends StatelessWidget {
                 builder: (context) => ViewerScreen(
                       startingIndex: 0,
                     )));
+      },
+      onLongPress: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("Edit"),
+                      leading: Icon(
+                        Icons.edit,
+                        color: blueColor,
+                      ),
+                    ),
+                    ListTile(
+                        title: Text("Remove"),
+                        leading: Icon(
+                          Icons.remove_circle,
+                          color: Colors.red,
+                        ),
+                        onTap: () {
+                          Provider.of<SubredditsState>(context, listen: false)
+                              .removeSource(source);
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ));
       },
       child: Card(
         child: Center(
