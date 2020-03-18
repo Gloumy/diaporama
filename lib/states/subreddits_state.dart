@@ -11,6 +11,8 @@ class SubredditsState with ChangeNotifier {
     ContentSource(name: "frontpage", label: "Front Page")
   ];
 
+  List<ContentSource> get contentSources => List.from(_sources);
+
   SubredditsState({@required this.redditService});
 
   Future<void> retrieveSources() async {
