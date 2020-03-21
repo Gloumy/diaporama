@@ -173,8 +173,11 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                   ),
                   if (_subreddits.isEmpty)
                     Text(
-                      "Select at least one subreddit",
-                      style: TextStyle(color: Colors.red),
+                      "Please select at least one subreddit",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                   ListView(
                     shrinkWrap: true,
