@@ -43,7 +43,7 @@ class _CommentWidgetState extends State<CommentWidget> {
         onTap: () {},
         child: Container(
           padding: EdgeInsets.only(
-              left: 8.0 * this.level, top: 8.0, bottom: 8.0, right: 8.0),
+              left: 8.0 * this.level, right: 8.0),
           child: Text("More comments..."),
         ),
       );
@@ -73,8 +73,8 @@ class _CommentWidgetState extends State<CommentWidget> {
                                 color: _getBorderColor(level), width: 3))),
                     padding: EdgeInsets.only(left: 5.0),
                     margin: EdgeInsets.only(
-                        top: 8.0,
-                        bottom: 8.0,
+                        // top: 8.0,
+                        // bottom: 8.0,
                         left: 8.0 * this.level,
                         right: 8.0),
                     child: Column(children: [

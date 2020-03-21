@@ -26,7 +26,7 @@ class _PostCommentsListState extends State<PostCommentsList> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Widget> nestedComments = [];
-            _getNestedComments(snapshot.data.comments, nestedComments, 0);
+            _getNestedComments(snapshot.data.comments, nestedComments, -1);
             return Column(
               children: List.generate(
                 nestedComments.length,
