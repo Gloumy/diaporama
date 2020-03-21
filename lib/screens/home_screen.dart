@@ -1,5 +1,6 @@
 import 'package:diaporama/presenters/redditor/user_greeting.dart';
 import 'package:diaporama/presenters/subreddits/content_sources_grid.dart';
+import 'package:diaporama/widgets/custom_app_bar.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,28 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(Icons.slideshow),
-            Text("Diaporama"),
-          ],
-        ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.settings), onPressed: () {})
-        ],
-      ),
-      body: Container(
-        height: double.maxFinite,
-        width: double.maxFinite,
-        child: ListView(
-          children: <Widget>[
-            UserGreeting(),
-            ContentSourcesGrid(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: CustomAppBar(),
+        body: Container(
+          height: double.maxFinite,
+          width: double.maxFinite,
+          child: ListView(
+            children: <Widget>[
+              UserGreeting(),
+              ContentSourcesGrid(),
+            ],
+          ),
         ),
       ),
     );
