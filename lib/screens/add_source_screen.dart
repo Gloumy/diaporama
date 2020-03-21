@@ -51,6 +51,9 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    style: TextStyle(
+                      color: lightGreyColor,
+                    ),
                     decoration: InputDecoration(
                       labelText: "Source name",
                       labelStyle: TextStyle(
@@ -82,6 +85,9 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                   ),
                   TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
+                      style: TextStyle(
+                        color: lightGreyColor,
+                      ),
                       decoration: InputDecoration(
                           labelText: "Subreddits",
                           labelStyle: TextStyle(
@@ -151,7 +157,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                     },
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 35,
                   ),
                   Text(
                     "Selected subreddits",
@@ -181,8 +187,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                                 color: redditOrange,
                                 width: 2.0,
                               )),
-                          margin:
-                              EdgeInsets.fromLTRB(15, 8, 15, 0),
+                          margin: EdgeInsets.fromLTRB(15, 8, 15, 0),
                           child: Row(
                             children: <Widget>[
                               Expanded(
