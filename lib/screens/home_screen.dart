@@ -34,9 +34,16 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Container(
           height: double.maxFinite,
           width: double.maxFinite,
+          padding: EdgeInsets.symmetric(
+            horizontal: 15.0,
+            vertical: 10.0,
+          ),
           child: ListView(
             children: <Widget>[
               UserGreeting(),
+              SizedBox(
+                height: 8,
+              ),
               ContentSourcesGrid(),
             ],
           ),
