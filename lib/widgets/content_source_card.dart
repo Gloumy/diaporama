@@ -51,11 +51,26 @@ class ContentSourceCard extends StatelessWidget {
                   ],
                 ));
       },
-      child: Card(
+      child: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        margin: EdgeInsets.all(3),
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: darkGreyColor,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: blueColor,
+            width: 2,
+          ),
+        ),
         child: Center(
           child: Text(
             source.label,
             textAlign: TextAlign.center,
+            style: TextStyle(
+              color: lightGreyColor,
+            ),
           ),
         ),
       ),
