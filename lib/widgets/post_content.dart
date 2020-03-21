@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -140,19 +141,49 @@ class _PostContentState extends State<PostContent> {
 
     return Column(children: [
       widget,
-      GestureDetector(
-        onTap: () {
-          setState(() {
-            _showComments = true;
-          });
-        },
-        child: Container(
-          width: double.maxFinite,
-          height: 35,
-          color: Colors.black45,
-          child: Center(
-            child: Text("Show Comments", style: TextStyle(color: Colors.white)),
-          ),
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: redditOrange, width: 2),
+              top: BorderSide(
+                color: redditOrange,
+                width: 2,
+              ),
+            ),
+            color: Colors.black12),
+        height: 35,
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.arrow_upward,
+              color: blueColor,
+            ),
+            Text(
+              _post.score.toString(),
+              style:
+                  TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
+            ),
+            Icon(Icons.arrow_downward, color: blueColor),
+            Expanded(child: Container()),
+            if (_post.comments != null)
+              Text(
+                _post.comments?.length.toString(),
+                style: TextStyle(
+                    color: lightGreyColor, fontWeight: FontWeight.bold),
+              ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showComments = true;
+                });
+              },
+              child: Icon(
+                Icons.mode_comment,
+                color: blueColor,
+              ),
+            ),
+          ],
         ),
       ),
       if (_showComments)
