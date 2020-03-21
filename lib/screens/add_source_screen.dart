@@ -223,7 +223,7 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           _formKey.currentState.save();
           if (!_formKey.currentState.validate() || _subreddits.isEmpty) return;
@@ -234,7 +234,8 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
           Navigator.pop(context);
         },
         backgroundColor: blueColor,
-        child: Icon(Icons.check),
+        label: Text("Add"),
+        icon: Icon(Icons.check),
       ),
     );
   }
