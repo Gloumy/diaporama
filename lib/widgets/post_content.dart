@@ -107,7 +107,18 @@ class _PostContentState extends State<PostContent> {
         );
         break;
       case PostType.Image:
-        widget = Image.network(_post.url.toString());
+        widget = Image.network(
+          _post.url.toString(),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes
+                  : null,
+            );
+          },
+        );
         break;
       case PostType.Link:
         widget = Column(
