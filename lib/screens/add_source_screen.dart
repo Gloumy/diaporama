@@ -151,11 +151,19 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                     },
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   Text(
                     "Selected subreddits",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: lightGreyColor,
+                      fontWeight: FontWeight.bold,
+                      decorationStyle: TextDecorationStyle.solid,
+                      decoration: TextDecoration.underline,
+                      decorationColor: redditOrange,
+                      decorationThickness: 3,
+                    ),
                   ),
                   if (_subreddits.isEmpty)
                     Text(
@@ -166,16 +174,42 @@ class _AddSourceScreenState extends State<AddSourceScreen> {
                     shrinkWrap: true,
                     children: [
                       for (String sub in _subreddits)
-                        ListTile(
-                          title: Text(sub),
-                          leading: IconButton(
-                              icon: Icon(Icons.remove_circle),
-                              onPressed: () {
-                                setState(() {
-                                  _subreddits.remove(sub);
-                                });
-                              }),
-                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(
+                                color: redditOrange,
+                                width: 2.0,
+                              )),
+                          margin:
+                              EdgeInsets.fromLTRB(15, 8, 15, 0),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.remove_circle,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _subreddits.remove(sub);
+                                      });
+                                    }),
+                              ),
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  sub,
+                                  style: TextStyle(
+                                    color: lightGreyColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                     ],
                   )
                 ],
