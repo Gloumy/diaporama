@@ -16,10 +16,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(
-              Icons.slideshow,
-              color: blueColor,
-              size: 24,
+            Image.asset(
+              "assets/images/diaporama-logo-inapp.png",
+              height: 38,
+              width: 38,
             ),
             Text(
               "Diaporama",
