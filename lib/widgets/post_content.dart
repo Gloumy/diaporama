@@ -5,6 +5,7 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -87,9 +88,19 @@ class _PostContentState extends State<PostContent> {
             color: darkGreyColor,
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Text(
-            _post.selftext,
-            style: TextStyle(color: lightGreyColor),
+          child: MarkdownBody(
+            data: _post.selftext,
+            styleSheet: MarkdownStyleSheet.fromTheme(
+              ThemeData(
+                textTheme: TextTheme(
+                  body1: TextStyle(
+                    fontSize: 14.0,
+                    fontFamily: "Raleway",
+                    color: lightGreyColor,
+                  ),
+                ),
+              ),
+            ),
           ),
         );
         break;
