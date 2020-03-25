@@ -134,11 +134,18 @@ class _PostContentState extends State<PostContent> {
           _post.url.toString(),
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) return child;
-            return CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      loadingProgress.expectedTotalBytes
-                  : null,
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  redditOrange,
+                ),
+                backgroundColor: darkGreyColor,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes
+                    : null,
+              ),
             );
           },
         );
