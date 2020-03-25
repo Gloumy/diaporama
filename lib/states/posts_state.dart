@@ -40,7 +40,7 @@ class PostsState with ChangeNotifier {
     switch (source.subredditsString) {
       case "frontpage":
         redditService.reddit.front
-            .hot(
+            .best(
               limit: limit,
               after: after,
             )

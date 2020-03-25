@@ -1,9 +1,11 @@
 import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
+import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -79,7 +81,30 @@ class _PostContentState extends State<PostContent> {
     Widget widget;
     switch (getPostType()) {
       case PostType.SelfPost:
-        widget = Text(_post.selftext);
+        widget = _post.selftext.isNotEmpty
+            ? Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: darkGreyColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: MarkdownBody(
+                  data: _post.selftext,
+                  styleSheet: MarkdownStyleSheet.fromTheme(
+                    ThemeData(
+                      textTheme: TextTheme(
+                        body1: TextStyle(
+                          fontSize: 14.0,
+                          fontFamily: "Raleway",
+                          color: lightGreyColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container();
         break;
       case PostType.Video:
         widget = FutureBuilder(
@@ -107,21 +132,77 @@ class _PostContentState extends State<PostContent> {
         );
         break;
       case PostType.Image:
-        widget = Image.network(_post.url.toString());
-        break;
-      case PostType.Link:
-        widget = Column(
-          children: <Widget>[
-            Text(_post.url.toString()),
-            RaisedButton(
-              onPressed: () => launch(_post.url.toString()),
-              child: Text("Go to URL"),
-            ),
-          ],
+        widget = Image.network(
+          _post.url.toString(),
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  redditOrange,
+                ),
+                backgroundColor: darkGreyColor,
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes
+                    : null,
+              ),
+            );
+          },
         );
         break;
-      case PostType.GifVideo:
-        widget = Text("GifVideo");
+      case PostType.Link:
+        widget = GestureDetector(
+          onTap: () => launch(_post.url.toString()),
+          child: Container(
+            margin: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: blueColor,
+                width: 2,
+              ),
+              borderRadius: BorderRadius.circular(5),
+              color: darkGreyColor,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Icon(
+                    Icons.launch,
+                    color: blueColor,
+                  ),
+                  flex: 1,
+                ),
+                VerticalDivider(
+                  thickness: 2,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Link",
+                        style: TextStyle(
+                          color: redditOrange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        _post.domain,
+                        style: TextStyle(color: lightGreyColor),
+                      ),
+                    ],
+                  ),
+                  flex: 3,
+                ),
+              ],
+            ),
+          ),
+        );
         break;
       default:
         throw "Unsupported post type";
@@ -129,19 +210,49 @@ class _PostContentState extends State<PostContent> {
 
     return Column(children: [
       widget,
-      GestureDetector(
-        onTap: () {
-          setState(() {
-            _showComments = true;
-          });
-        },
-        child: Container(
-          width: double.maxFinite,
-          height: 35,
-          color: Colors.black45,
-          child: Center(
-            child: Text("Show Comments", style: TextStyle(color: Colors.white)),
-          ),
+      Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: redditOrange, width: 2),
+              top: BorderSide(
+                color: redditOrange,
+                width: 2,
+              ),
+            ),
+            color: Colors.black12),
+        height: 35,
+        child: Row(
+          children: <Widget>[
+            Icon(
+              Icons.arrow_upward,
+              color: blueColor,
+            ),
+            Text(
+              _post.score.toString(),
+              style:
+                  TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
+            ),
+            Icon(Icons.arrow_downward, color: blueColor),
+            Expanded(child: Container()),
+            if (_post.comments != null)
+              Text(
+                _post.comments?.length.toString(),
+                style: TextStyle(
+                    color: lightGreyColor, fontWeight: FontWeight.bold),
+              ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  _showComments = true;
+                });
+              },
+              child: Icon(
+                Icons.mode_comment,
+                color: blueColor,
+              ),
+            ),
+          ],
         ),
       ),
       if (_showComments)

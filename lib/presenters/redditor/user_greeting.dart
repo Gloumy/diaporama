@@ -14,18 +14,32 @@ class UserGreeting extends StatelessWidget {
       builder: (context, username, child) {
         return Row(
           children: <Widget>[
-            Text(
-              "Hi ${username ?? "Anonymous"} !",
-              style: TextStyle(
-                color: lightGreyColor,
+            RichText(
+              text: TextSpan(
+                text: "Hi ",
+                children: [
+                  TextSpan(
+                    text: username ?? "Anonymous",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: redditOrange,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " !",
+                  ),
+                ],
               ),
             ),
+            SizedBox(
+              width: 10.0,
+            ),
             if (username == null)
-              IconButton(
-                  icon: Icon(
-                    Icons.person,
-                    color: redditOrange,
-                  ),
+              RaisedButton.icon(
+                  textColor: lightGreyColor,
+                  color: blueColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
                   onPressed: () {
                     Reddit reddit = Reddit.createInstalledFlowInstance(
                       clientId: redditSecret,
@@ -33,7 +47,12 @@ class UserGreeting extends StatelessWidget {
                       redirectUri: Uri.parse("diaporama://cornet.dev"),
                     );
                     launch(reddit.auth.url(["*"], "diaporama-auth").toString());
-                  }),
+                  },
+                  icon: Icon(
+                    Icons.person,
+                    size: 20,
+                  ),
+                  label: Text("Login"))
           ],
         );
       },
