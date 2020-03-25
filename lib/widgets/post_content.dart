@@ -81,28 +81,30 @@ class _PostContentState extends State<PostContent> {
     Widget widget;
     switch (getPostType()) {
       case PostType.SelfPost:
-        widget = Container(
-          padding: EdgeInsets.all(10),
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: darkGreyColor,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: MarkdownBody(
-            data: _post.selftext,
-            styleSheet: MarkdownStyleSheet.fromTheme(
-              ThemeData(
-                textTheme: TextTheme(
-                  body1: TextStyle(
-                    fontSize: 14.0,
-                    fontFamily: "Raleway",
-                    color: lightGreyColor,
+        widget = _post.selftext.isNotEmpty
+            ? Container(
+                padding: EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: darkGreyColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: MarkdownBody(
+                  data: _post.selftext,
+                  styleSheet: MarkdownStyleSheet.fromTheme(
+                    ThemeData(
+                      textTheme: TextTheme(
+                        body1: TextStyle(
+                          fontSize: 14.0,
+                          fontFamily: "Raleway",
+                          color: lightGreyColor,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-        );
+              )
+            : Container();
         break;
       case PostType.Video:
         widget = FutureBuilder(
