@@ -202,9 +202,6 @@ class _PostContentState extends State<PostContent> {
           ),
         );
         break;
-      case PostType.GifVideo:
-        widget = Text("GifVideo");
-        break;
       default:
         throw "Unsupported post type";
     }
