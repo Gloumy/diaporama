@@ -20,21 +20,19 @@ class _CommentWidgetState extends State<CommentWidget> {
   dynamic post;
   int score;
   bool actionsVisibility = false;
-  
+
   bool upvoted = false;
   bool downvoted = false;
   int level;
 
-  Color _getBorderColor(int level) {
-    switch (level) {
-      case 1:
-        return redditOrange;
-        break;
-      default:
-        return Colors.green;
-        break;
-    }
-  }
+  final List<Color> commentBorderColor = [
+    mediumGreyColor,
+    Colors.blue,
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,24 +40,23 @@ class _CommentWidgetState extends State<CommentWidget> {
       return InkWell(
         onTap: () {},
         child: Container(
-          padding: EdgeInsets.only(
-              left: 8.0 * this.level, right: 8.0),
+          padding: EdgeInsets.only(left: 8.0 * this.level, right: 8.0),
           child: Text("More comments..."),
         ),
       );
     } else if (post is Comment) {
       score = post.score;
       return InkWell(
-        onLongPress: () {
-          if (!post.reddit.auth.userAgent.contains("anon")) {
-            setState(() {
-              actionsVisibility = !actionsVisibility;
-            });
-          } else {
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text("You must be logged in for comment actions!")));
-          }
-        },
+        // onLongPress: () {
+        //   if (!post.reddit.auth.userAgent.contains("anon")) {
+        //     setState(() {
+        //       actionsVisibility = !actionsVisibility;
+        //     });
+        //   } else {
+        //     Scaffold.of(context).showSnackBar(SnackBar(
+        //         content: Text("You must be logged in for comment actions!")));
+        //   }
+        // },
         child: Column(
           children: <Widget>[
             Row(
@@ -68,9 +65,14 @@ class _CommentWidgetState extends State<CommentWidget> {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                                color: _getBorderColor(level), width: 3))),
+                      border: Border(
+                        left: BorderSide(
+                            color: level < 6
+                                ? commentBorderColor[level]
+                                : Colors.grey,
+                            width: 3),
+                      ),
+                    ),
                     padding: EdgeInsets.only(left: 5.0),
                     margin: EdgeInsets.only(
                         // top: 8.0,
@@ -85,7 +87,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                           //The post's author
                           Text(
                             post.author,
-                            style: TextStyle(fontSize: 12.0),
+                            style: TextStyle(
+                                fontSize: 12.0,
+                                color: lightGreyColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor: redditOrange,
+                                fontWeight: FontWeight.bold),
                           ),
                           //The post's author's flair text
                           Builder(
@@ -124,6 +131,8 @@ class _CommentWidgetState extends State<CommentWidget> {
                                 score.toString(),
                                 style: TextStyle(
                                   fontSize: 10.0,
+                                  fontStyle: FontStyle.italic,
+                                  color: lightGreyColor,
                                 ),
                               ),
                             ),
@@ -132,7 +141,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                       ),
                       //The actual comment body
                       Container(
-                          margin: EdgeInsets.only(top: 8.0),
+                          margin: EdgeInsets.only(top: 8.0, bottom: 2.0),
                           alignment: Alignment.centerLeft,
                           child: MarkdownBody(
                             data: post.body,
@@ -141,6 +150,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                 body1: TextStyle(
                                   fontSize: 12.0,
                                   fontFamily: "Raleway",
+                                  color: lightGreyColor,
                                 ),
                               ),
                             )),
@@ -246,8 +256,8 @@ class _CommentWidgetState extends State<CommentWidget> {
             Container(
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: Colors.black,
-                  width: 0.10,
+                  color: mediumGreyColor,
+                  width: 0.20,
                   style: BorderStyle.solid,
                 ),
               ),
