@@ -75,6 +75,9 @@ class _PostCommentsListState extends State<PostCommentsList> {
         if (reply.replies != null) {
           _getNestedComments(reply.replies.comments, widgets, level);
         }
+      } else if (reply is MoreComments) {
+        print("More comment");
+        //TODO: handle more commments case
       }
     });
   }
