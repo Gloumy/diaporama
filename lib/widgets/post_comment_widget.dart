@@ -1,4 +1,5 @@
 import 'package:diaporama/utils/colors.dart';
+import 'package:diaporama/widgets/post_comment_body.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 
@@ -34,25 +35,9 @@ class PostCommentWidget extends StatelessWidget {
                 ),
               ),
             ),
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 6.0,
-                      top: 4.0,
-                      bottom: 4.0,
-                    ),
-                    child: Text(comment.body),
-                  ),
-                ),
-              ],
+            child: PostCommentBody(
+              comment: comment,
             ),
-          ),
-          Container(
-            color: darkGreyColor,
-            height: 0.5,
-            width: double.maxFinite,
           ),
           if (comment.replies != null)
             for (dynamic comment in comment.replies.comments)
