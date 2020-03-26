@@ -1,28 +1,41 @@
+
 # Diaporama (for Reddit)
 
-## A pretty simple Flutter app to browse Reddit with swiping gestures
+![enter image description here](https://raw.githubusercontent.com/Gloumy/diaporama/master/assets/images/diaporama-logo-inapp.png =100x)
+## A pretty simple Flutter app to browse Reddit with swiping gestures  
+You select your content source (list of subreddits) and you just have to swipe right/left to navigate between threads. Ain't it easy ?
 
-### Intended Features
-* Create subreddits list
-* Swipe through displayed posts (PageView)
-* Light and Dark themes
-* Autoplay
-* Maybe more if i think about something else ..
+### Features (as of 2020-03-26)
 
-### Status (2020-03-05)
-* Reddit OAuth
-* Fetch popular posts
-* Display them as a PageView with comments
+ - [x] Retrieve content from Front Page/Popular
+ - [x] Anonymous/Authenticated mode
+ - [x] Manage your content sources (add/remove)
+	 - [x] Search subreddits with autocomplete
+ - [x] PageView display of threads
+ - [x] Comments display
+ - [x] Dark Theme (actually that's the only theme)
+ - [x] Implemented design (at least to me it doesn't look that ugly)
 
-#### Next Steps
-* Implement a base settings page (at least to handle login/logout for now)
-* Review the PostTypes to handle possibly more cases
-* Implement a real design
+### Next steps
+
+ - [ ] Implement something for the "redditSecret"
+ - [ ] Improve the handling of different submissions types
+ - [ ] Improve comments display
+ - [ ] Implement comment reply
+ - [ ] Implement upvote/downvote
+ - [ ] Implement settings page
+ - [ ] Improve miscellaneous things and implement a lot of other things that are still missing to look like a real Reddit client !
+
+  
 
 ### Contribute
+
 Well, don't hesitate to share feedback and/or ideas !
 
-### Running the app
-No configuration needed as for now, just clone, cd in, flutter run and voilà 
+  
 
-Thanks to TheNightmanCodeth for his DitRA work, i've taken some inspirations for the some parts in the code where i've got stuck
+### Running the app
+You need to set the **redditSecret** string corresponding to your apiKey from Reddit. After that, you can run the app and voilà.
+
+---
+Thanks to TheNightmanCodeth for his DitRA work, i've taken inspiration and copied some code for the comments part. I'll rework that later, but it allowed me to not be stuck and continue the development. 
