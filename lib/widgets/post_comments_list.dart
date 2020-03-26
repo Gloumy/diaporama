@@ -1,3 +1,4 @@
+import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/comment_widget.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
@@ -21,28 +22,47 @@ class _PostCommentsListState extends State<PostCommentsList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: initComments(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<Widget> nestedComments = [];
-            _getNestedComments(snapshot.data.comments, nestedComments, -1);
-            return Column(
-              children: List.generate(
-                nestedComments.length,
-                (index) => nestedComments[index],
-              ),
-            );
-          } else {
-            if (snapshot.hasError) {
-              print(snapshot.error);
+    if (_post.comments == null) {
+      //Can happen for first post if it hasn't loaded the comments yet
+      return FutureBuilder(
+          future: initComments(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Widget> nestedComments = [];
+              _getNestedComments(snapshot.data.comments, nestedComments, -1);
+              return Column(
+                children: List.generate(
+                  nestedComments.length,
+                  (index) => nestedComments[index],
+                ),
+              );
+            } else {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+              }
+              return Container(
+                height: 0.0,
+                width: 0.0,
+              );
             }
-            return Container(
-              height: 0.0,
-              width: 0.0,
-            );
-          }
-        });
+          });
+    } else if (_post.comments.comments.isNotEmpty) {
+      List<Widget> nestedComments = [];
+      _getNestedComments(_post.comments.comments, nestedComments, -1);
+      return Column(
+        children: List.generate(
+          nestedComments.length,
+          (index) => nestedComments[index],
+        ),
+      );
+    } else {
+      return Text(
+        "--- No comments ---",
+        style: TextStyle(
+          color: lightGreyColor,
+        ),
+      );
+    }
   }
 
   //Thanks @Patte1808 for implementation

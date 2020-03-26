@@ -28,7 +28,6 @@ class PostContent extends StatefulWidget {
 class _PostContentState extends State<PostContent> {
   Submission get _post => widget.post;
   bool get _loadMore => widget.loadMore;
-  bool _showComments = false;
 
   VideoPlayerController _playerController;
   ChewieController _chewieController;
@@ -50,11 +49,6 @@ class _PostContentState extends State<PostContent> {
         aspectRatio: _playerController.value.aspectRatio,
         allowedScreenSleep: false,
       );
-    }
-    if (getPostType() == PostType.SelfPost || getPostType() == PostType.Link) {
-      setState(() {
-        _showComments = true;
-      });
     }
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
@@ -242,24 +236,16 @@ class _PostContentState extends State<PostContent> {
                 style: TextStyle(
                     color: lightGreyColor, fontWeight: FontWeight.bold),
               ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _showComments = true;
-                });
-              },
-              child: Icon(
-                Icons.mode_comment,
-                color: blueColor,
-              ),
+            Icon(
+              Icons.mode_comment,
+              color: blueColor,
             ),
           ],
         ),
       ),
-      if (_showComments)
-        PostCommentsList(
-          post: _post,
-        )
+      PostCommentsList(
+        post: _post,
+      )
     ]);
   }
 

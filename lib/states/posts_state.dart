@@ -30,7 +30,9 @@ class PostsState with ChangeNotifier {
     notifyListeners();
 
     streamController.stream.listen((post) {
-      _contents.add(post);
+      Submission content = post;
+      content.refreshComments(); //load comments directly
+      _contents.add(content);
     }, onDone: () {
       setBusy(value: false);
     });
