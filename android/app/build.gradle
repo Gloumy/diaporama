@@ -51,11 +51,13 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+            resValue "string", "app_name", "Diaporama"
         }
 
         debug {
             applicationIdSuffix ".debug"
             debuggable true
+            resValue "string", "app_name", "[dev]Diaporama"
         }
     }
 }
