@@ -1,5 +1,5 @@
 import 'package:diaporama/utils/colors.dart';
-import 'package:diaporama/widgets/comment_widget.dart';
+import 'package:diaporama/widgets/post_comment_widget.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 
@@ -28,13 +28,15 @@ class _PostCommentsListState extends State<PostCommentsList> {
           future: initComments(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Widget> nestedComments = [];
-              _getNestedComments(snapshot.data.comments, nestedComments, -1);
               return Column(
-                children: List.generate(
-                  nestedComments.length,
-                  (index) => nestedComments[index],
-                ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  for (dynamic topComment in _post.comments.comments)
+                    PostCommentWidget(
+                      level: 0,
+                      comment: topComment,
+                    )
+                ],
               );
             } else {
               if (snapshot.hasError) {
@@ -47,13 +49,15 @@ class _PostCommentsListState extends State<PostCommentsList> {
             }
           });
     } else if (_post.comments.comments.isNotEmpty) {
-      List<Widget> nestedComments = [];
-      _getNestedComments(_post.comments.comments, nestedComments, -1);
       return Column(
-        children: List.generate(
-          nestedComments.length,
-          (index) => nestedComments[index],
-        ),
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          for (dynamic topComment in _post.comments.comments)
+            PostCommentWidget(
+              level: 0,
+              comment: topComment,
+            )
+        ],
       );
     } else {
       return Text(
@@ -63,22 +67,5 @@ class _PostCommentsListState extends State<PostCommentsList> {
         ),
       );
     }
-  }
-
-  //Thanks @Patte1808 for implementation
-  void _getNestedComments(List replies, List widgets, int level) {
-    level++;
-    replies.forEach((reply) {
-      if (reply is Comment) {
-        widgets.add(CommentWidget(reply, level));
-
-        if (reply.replies != null) {
-          _getNestedComments(reply.replies.comments, widgets, level);
-        }
-      } else if (reply is MoreComments) {
-        print("More comment");
-        //TODO: handle more commments case
-      }
-    });
   }
 }
