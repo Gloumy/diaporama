@@ -1,7 +1,8 @@
 
 # Diaporama (for Reddit)
 
-![enter image description here](https://raw.githubusercontent.com/Gloumy/diaporama/master/assets/images/diaporama-logo-inapp.png =100x)
+<img src="https://raw.githubusercontent.com/Gloumy/diaporama/master/assets/images/diaporama-logo-inapp.png" width="150">
+
 ## A pretty simple Flutter app to browse Reddit with swiping gestures  
 You select your content source (list of subreddits) and you just have to swipe right/left to navigate between threads. Ain't it easy ?
 
