@@ -2,6 +2,7 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommentWidget extends StatefulWidget {
   CommentWidget(this.post, this.level);
@@ -145,6 +146,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                           alignment: Alignment.centerLeft,
                           child: MarkdownBody(
                             data: post.body,
+                            onTapLink: (link) => launch(link),
                             styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(
                               textTheme: TextTheme(
                                 body1: TextStyle(

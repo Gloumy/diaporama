@@ -91,6 +91,7 @@ class _PostContentState extends State<PostContent> {
                 ),
                 child: MarkdownBody(
                   data: _post.selftext,
+                  onTapLink: (link) => launch(link),
                   styleSheet: MarkdownStyleSheet.fromTheme(
                     ThemeData(
                       textTheme: TextTheme(
