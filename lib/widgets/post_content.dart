@@ -2,10 +2,12 @@ import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
+import 'package:diaporama/utils/custom_markdown_stylesheet.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
@@ -84,19 +86,9 @@ class _PostContentState extends State<PostContent> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: MarkdownBody(
-                  data: _post.selftext,
+                  data: HtmlUnescape().convert(_post.selftext),
                   onTapLink: (link) => launch(link),
-                  styleSheet: MarkdownStyleSheet.fromTheme(
-                    ThemeData(
-                      textTheme: TextTheme(
-                        body1: TextStyle(
-                          fontSize: 14.0,
-                          fontFamily: "Raleway",
-                          color: lightGreyColor,
-                        ),
-                      ),
-                    ),
-                  ),
+                  styleSheet: customMarkdownStyleSheet,
                 ),
               )
             : Container();

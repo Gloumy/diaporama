@@ -1,4 +1,5 @@
 import 'package:diaporama/utils/colors.dart';
+import 'package:diaporama/utils/custom_markdown_stylesheet.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -102,15 +103,7 @@ class PostCommentBody extends StatelessWidget {
                 child: MarkdownBody(
                   data: HtmlUnescape().convert(comment.body),
                   onTapLink: (link) => launch(link),
-                  styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(
-                    textTheme: TextTheme(
-                      body1: TextStyle(
-                        fontSize: 12.0,
-                        fontFamily: "Raleway",
-                        color: lightGreyColor,
-                      ),
-                    ),
-                  )),
+                  styleSheet: customMarkdownStyleSheet,
                 ),
               ),
             ),
