@@ -3,7 +3,7 @@ import 'package:diaporama/widgets/post_comment_body.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 
-class PostCommentWidget extends StatelessWidget {
+class PostCommentWidget extends StatefulWidget {
   final dynamic comment;
   final int level;
 
@@ -11,42 +11,80 @@ class PostCommentWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  _PostCommentWidgetState createState() => _PostCommentWidgetState();
+}
+
+class _PostCommentWidgetState extends State<PostCommentWidget> {
+  dynamic get _comment => widget.comment;
+  int get _level => widget.level;
+
+  final List<Color> commentBorderColor = [
+    mediumGreyColor,
+    Colors.blue,
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+  ];
+
+  bool _collapseChildren = false;
+
+  @override
   Widget build(BuildContext context) {
     Widget widget;
-    final List<Color> commentBorderColor = [
-      mediumGreyColor,
-      Colors.blue,
-      Colors.red,
-      Colors.orange,
-      Colors.yellow,
-      Colors.green,
-    ];
-    if (comment is Comment) {
-      widget = Column(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  width: 4.0,
-                  color: level < commentBorderColor.length
-                      ? commentBorderColor[level]
-                      : Colors.grey,
+
+    if (_comment is Comment) {
+      widget = GestureDetector(
+        onTap: () {
+          setState(() {
+            _collapseChildren = !_collapseChildren;
+          });
+        },
+        onDoubleTap: () {
+          print("upvote");
+        },
+        child: Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    width: 4.0,
+                    color: _level < commentBorderColor.length
+                        ? commentBorderColor[_level]
+                        : Colors.grey,
+                  ),
                 ),
               ),
+              child: Column(
+                children: <Widget>[
+                  PostCommentBody(
+                    comment: _comment,
+                  ),
+                  if (_collapseChildren)
+                    Container(
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        color: lightGreyColor,
+                      ),
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                          color: blueColor,
+                          borderRadius: BorderRadius.circular(5)),
+                    )
+                ],
+              ),
             ),
-            child: PostCommentBody(
-              comment: comment,
-            ),
-          ),
-          if (comment.replies != null)
-            for (dynamic comment in comment.replies.comments)
-              if (comment is Comment)
-                PostCommentWidget(
-                  comment: comment,
-                  level: level + 1,
-                )
-        ],
+            if (_comment.replies != null && !_collapseChildren)
+              for (dynamic comment in _comment.replies.comments)
+                if (comment is Comment)
+                  PostCommentWidget(
+                    comment: comment,
+                    level: _level + 1,
+                  ),
+          ],
+        ),
       );
     } else {
       return Container(child: Text("More Comments"));
@@ -54,7 +92,7 @@ class PostCommentWidget extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-        left: level > 0 ? 4.0 : 0.0,
+        left: _level > 0 ? 4.0 : 0.0,
       ),
       child: widget,
     );
