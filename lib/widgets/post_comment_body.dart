@@ -48,7 +48,7 @@ class PostCommentBody extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         child: Text(
-                          comment.authorFlairText,
+                          HtmlUnescape().convert(comment.authorFlairText),
                           style: TextStyle(
                             fontSize: 8.0,
                             color: Colors.white,
