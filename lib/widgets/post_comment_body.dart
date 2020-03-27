@@ -4,6 +4,7 @@ import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostCommentBody extends StatelessWidget {
@@ -29,11 +30,20 @@ class PostCommentBody extends StatelessWidget {
                 comment.author,
                 style: TextStyle(
                     fontSize: 12.0,
-                    color: lightGreyColor,
+                    color: comment.author ==
+                            Provider.of<String>(context, listen: false)
+                        ? redditOrange
+                        : lightGreyColor,
                     decoration: TextDecoration.underline,
                     decorationColor: redditOrange,
                     fontWeight: FontWeight.bold),
               ),
+              if (comment.author == Provider.of<String>(context, listen: false))
+                Icon(
+                  Icons.mic,
+                  color: redditOrange,
+                  size: 14,
+                ),
               //The comment's author's flair text
               Builder(
                 builder: (ctx) {

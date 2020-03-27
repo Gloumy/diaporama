@@ -195,50 +195,53 @@ class _PostContentState extends State<PostContent> {
         throw "Unsupported post type";
     }
 
-    return Column(children: [
-      widget,
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.0),
-        decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: redditOrange, width: 2),
-              top: BorderSide(
-                color: redditOrange,
-                width: 2,
+    return Provider<String>.value(
+      value: _post.author,
+      child: Column(children: [
+        widget,
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: redditOrange, width: 2),
+                top: BorderSide(
+                  color: redditOrange,
+                  width: 2,
+                ),
               ),
-            ),
-            color: Colors.black12),
-        height: 35,
-        child: Row(
-          children: <Widget>[
-            Icon(
-              Icons.arrow_upward,
-              color: blueColor,
-            ),
-            Text(
-              _post.score.toString(),
-              style:
-                  TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
-            ),
-            Icon(Icons.arrow_downward, color: blueColor),
-            Expanded(child: Container()),
-            if (_post.comments != null)
+              color: Colors.black12),
+          height: 35,
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.arrow_upward,
+                color: blueColor,
+              ),
               Text(
-                _post.comments?.length.toString(),
+                _post.score.toString(),
                 style: TextStyle(
                     color: lightGreyColor, fontWeight: FontWeight.bold),
               ),
-            Icon(
-              Icons.mode_comment,
-              color: blueColor,
-            ),
-          ],
+              Icon(Icons.arrow_downward, color: blueColor),
+              Expanded(child: Container()),
+              if (_post.comments != null)
+                Text(
+                  _post.comments?.length.toString(),
+                  style: TextStyle(
+                      color: lightGreyColor, fontWeight: FontWeight.bold),
+                ),
+              Icon(
+                Icons.mode_comment,
+                color: blueColor,
+              ),
+            ],
+          ),
         ),
-      ),
-      PostCommentsList(
-        post: _post,
-      )
-    ]);
+        PostCommentsList(
+          post: _post,
+        )
+      ]),
+    );
   }
 
   @override
