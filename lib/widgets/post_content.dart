@@ -223,17 +223,6 @@ class _PostContentState extends State<PostContent> {
                     color: lightGreyColor, fontWeight: FontWeight.bold),
               ),
               Icon(Icons.arrow_downward, color: blueColor),
-              Expanded(child: Container()),
-              if (_post.comments != null)
-                Text(
-                  _post.comments?.length.toString(),
-                  style: TextStyle(
-                      color: lightGreyColor, fontWeight: FontWeight.bold),
-                ),
-              Icon(
-                Icons.mode_comment,
-                color: blueColor,
-              ),
             ],
           ),
         ),
