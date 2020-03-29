@@ -29,4 +29,7 @@ MarkdownStyleSheet customMarkdownStyleSheet = MarkdownStyleSheet.fromTheme(
     color: mediumGreyColor,
     borderRadius: BorderRadius.circular(2.0),
   ),
+  tableCellsDecoration: BoxDecoration(
+    color: darkGreyColor,
+  ),
 );
