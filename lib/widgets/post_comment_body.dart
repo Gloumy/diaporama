@@ -39,10 +39,15 @@ class PostCommentBody extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               if (comment.author == Provider.of<String>(context, listen: false))
-                Icon(
-                  Icons.mic,
-                  color: redditOrange,
-                  size: 14,
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Icon(
+                    Icons.mic,
+                    color: redditOrange,
+                    size: 14,
+                  ),
                 ),
               //The comment's author's flair text
               if (comment.authorFlairText != null &&
@@ -66,6 +71,16 @@ class PostCommentBody extends StatelessWidget {
                     ),
                   ),
                 ),
+              if (comment.edited)
+                Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Icon(
+                      Icons.edit,
+                      color: redditOrange,
+                      size: 14,
+                    )),
               //The score of the comment
               Expanded(
                 child: Container(
