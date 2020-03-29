@@ -45,33 +45,27 @@ class PostCommentBody extends StatelessWidget {
                   size: 14,
                 ),
               //The comment's author's flair text
-              Builder(
-                builder: (ctx) {
-                  if (comment.authorFlairText != null) {
-                    return Container(
-                      margin: EdgeInsets.only(left: 8.0),
-                      child: Container(
-                        padding: EdgeInsets.all(3.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
-                          ),
-                          color: Colors.grey,
-                        ),
-                        child: Text(
-                          HtmlUnescape().convert(comment.authorFlairText),
-                          style: TextStyle(
-                            fontSize: 8.0,
-                            color: Colors.white,
-                          ),
-                        ),
+              if (comment.authorFlairText != null &&
+                  comment.authorFlairText.isNotEmpty)
+                Container(
+                  margin: EdgeInsets.only(left: 8.0),
+                  child: Container(
+                    padding: EdgeInsets.all(3.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
                       ),
-                    );
-                  } else {
-                    return Container(width: 0.0, height: 0.0);
-                  }
-                },
-              ),
+                      color: Colors.grey,
+                    ),
+                    child: Text(
+                      HtmlUnescape().convert(comment.authorFlairText),
+                      style: TextStyle(
+                        fontSize: 8.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               //The score of the comment
               Expanded(
                 child: Container(
