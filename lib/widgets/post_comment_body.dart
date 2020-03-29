@@ -81,6 +81,63 @@ class PostCommentBody extends StatelessWidget {
                       color: redditOrange,
                       size: 14,
                     )),
+              if (comment.silver != null && comment.silver > 0)
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/images/coins/silver_48.png",
+                        height: 12,
+                        width: 12,
+                      ),
+                      Text(
+                        comment.silver.toString(),
+                        style: TextStyle(color: lightGreyColor),
+                      ),
+                    ],
+                  ),
+                ),
+              if (comment.gold != null && comment.gold > 0)
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/images/coins/gold_48.png",
+                        height: 12,
+                        width: 12,
+                      ),
+                      Text(
+                        comment.gold.toString(),
+                        style: TextStyle(color: lightGreyColor),
+                      ),
+                    ],
+                  ),
+                ),
+              if (comment.platinum != null && comment.platinum > 0)
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        "assets/images/coins/platinum_48.png",
+                        height: 12,
+                        width: 12,
+                      ),
+                      Text(
+                        comment.platinum.toString(),
+                        style: TextStyle(color: lightGreyColor),
+                      ),
+                    ],
+                  ),
+                ),
               //The score of the comment
               Expanded(
                 child: Container(
