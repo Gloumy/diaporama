@@ -4,16 +4,12 @@ import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/states/subreddits_state.dart';
 import 'package:diaporama/utils/base_theme.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
 
   GlobalState globalState = GlobalState();
 
