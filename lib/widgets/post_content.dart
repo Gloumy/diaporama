@@ -7,6 +7,7 @@ import 'package:diaporama/widgets/post_content/image_content.dart';
 import 'package:diaporama/widgets/post_content/link_content.dart';
 import 'package:diaporama/widgets/post_content/self_post_content.dart';
 import 'package:diaporama/widgets/post_content/video_content.dart';
+import 'package:diaporama/widgets/post_content/youtube_video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,9 @@ class _PostContentState extends State<PostContent> {
     if (_post.isSelf) return PostType.SelfPost;
     if (RegExp(r"\.(gif|jpe?g|bmp|png)$").hasMatch(_post.url.toString()))
       return PostType.Image;
+    if (RegExp(
+            r"(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})")
+        .hasMatch(_post.url.toString())) return PostType.YoutubeVideo;
     if (["v.redd.it", "gfycat.com", "i.redd.it", "i.imgur.com"]
             .contains(_post.domain) ||
         _post.url.toString().contains('.gifv')) return PostType.GifVideo;
@@ -68,6 +72,11 @@ class _PostContentState extends State<PostContent> {
         break;
       case PostType.Link:
         widget = LinkContent(post: _post);
+        break;
+      case PostType.YoutubeVideo:
+        widget = YoutubeVideoContent(
+          url: _post.url.toString(),
+        );
         break;
       default:
         throw "Unsupported post type";
