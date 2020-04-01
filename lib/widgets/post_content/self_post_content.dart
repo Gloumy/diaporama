@@ -27,6 +27,5 @@ class SelfPostContent extends StatelessWidget {
             ),
           )
         : Container();
-    ;
   }
 }
