@@ -58,15 +58,11 @@ class _PostContentState extends State<PostContent> {
 
   PostType getPostType() {
     if (_post.isSelf) return PostType.SelfPost;
-    if (["i.redd.it", "i.imgur.com"].contains(_post.domain)) {
-      if (_post.url.toString().contains('.gifv')) {
-        return PostType.GifVideo;
-      } else {
+    if (RegExp(r"\.(gif|jpe?g|bmp|png)$").hasMatch(_post.url.toString()))
         return PostType.Image;
-      }
-    }
-    if (["v.redd.it", "gfycat.com"].contains(_post.domain))
-      return PostType.GifVideo;
+    if (["v.redd.it", "gfycat.com", "i.redd.it", "i.imgur.com"]
+            .contains(_post.domain) ||
+        _post.url.toString().contains('.gifv')) return PostType.GifVideo;
     if (_post.isVideo) return PostType.Video;
 
     return PostType.Link;
