@@ -1,18 +1,14 @@
-import 'package:chewie/chewie.dart';
 import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
-import 'package:diaporama/utils/custom_markdown_stylesheet.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content/gif_video_content.dart';
+import 'package:diaporama/widgets/post_content/self_post_content.dart';
 import 'package:diaporama/widgets/post_content/video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 class PostContent extends StatefulWidget {
   final Submission post;
@@ -57,21 +53,9 @@ class _PostContentState extends State<PostContent> {
     print("postType: ${getPostType()}");
     switch (getPostType()) {
       case PostType.SelfPost:
-        widget = _post.selftext.isNotEmpty
-            ? Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: darkGreyColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: MarkdownBody(
-                  data: HtmlUnescape().convert(_post.selftext),
-                  onTapLink: (link) => launch(link),
-                  styleSheet: customMarkdownStyleSheet,
-                ),
-              )
-            : Container();
+        widget = SelfPostContent(
+          text: _post.selftext,
+        );
         break;
       case PostType.Video:
         widget = VideoContent(post: _post);
