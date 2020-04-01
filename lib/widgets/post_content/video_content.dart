@@ -3,18 +3,17 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_provider/video_provider.dart';
 
-class GifVideoContent extends StatefulWidget {
+class VideoContent extends StatefulWidget {
   final Submission post;
 
-  const GifVideoContent({Key key, this.post}) : super(key: key);
+  const VideoContent({Key key, this.post}) : super(key: key);
 
   @override
-  _GifVideoContentState createState() => _GifVideoContentState();
+  _VideoContentState createState() => _VideoContentState();
 }
 
-class _GifVideoContentState extends State<GifVideoContent> {
+class _VideoContentState extends State<VideoContent> {
   Submission get _post => widget.post;
 
   VideoPlayerController _playerController;
@@ -23,11 +22,7 @@ class _GifVideoContentState extends State<GifVideoContent> {
   @override
   void initState() {
     super.initState();
-    VideoProvider.fromUri(_post.url)
-        .getVideos()
-        .forEach((u) => print(u.uri.toString()));
-    Uri videoUrl = VideoProvider.fromUri(_post.url).getVideos().first.uri;
-    _playerController = VideoPlayerController.network(videoUrl.toString());
+    _playerController = VideoPlayerController.network(_post.url.toString());
     _playerController.initialize();
     _chewieController = ChewieController(
       videoPlayerController: _playerController,

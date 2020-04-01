@@ -5,6 +5,7 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/utils/custom_markdown_stylesheet.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content/gif_video_content.dart';
+import 'package:diaporama/widgets/post_content/video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -12,7 +13,6 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_provider/video_provider.dart';
 
 class PostContent extends StatefulWidget {
   final Submission post;
@@ -32,31 +32,9 @@ class _PostContentState extends State<PostContent> {
   Submission get _post => widget.post;
   bool get _loadMore => widget.loadMore;
 
-  VideoPlayerController _playerController;
-  ChewieController _chewieController;
-  Future<void> _initializeVideoPlayerFuture;
-
   @override
   void initState() {
     super.initState();
-    if (getPostType() == PostType.Video) {
-      _playerController = VideoPlayerController.network(_post.url.toString());
-      _initializeVideoPlayerFuture = _playerController.initialize();
-    }
-    if (getPostType() == PostType.GifVideo) {
-      VideoProvider.fromUri(_post.url)
-          .getVideos()
-          .forEach((u) => print(u.uri.toString()));
-      Uri videoUrl = VideoProvider.fromUri(_post.url).getVideos().first.uri;
-      _playerController = VideoPlayerController.network(videoUrl.toString());
-      _playerController.initialize();
-      _chewieController = ChewieController(
-        videoPlayerController: _playerController,
-        aspectRatio: _playerController.value.aspectRatio,
-        allowedScreenSleep: false,
-      );
-      print("url :$videoUrl");
-    }
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
   }
@@ -96,24 +74,7 @@ class _PostContentState extends State<PostContent> {
             : Container();
         break;
       case PostType.Video:
-        widget = FutureBuilder(
-          future: _initializeVideoPlayerFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              // If the VideoPlayerController has finished initialization, use
-              // the data it provides to limit the aspect ratio of the VideoPlayer.
-              return AspectRatio(
-                aspectRatio: _playerController.value.aspectRatio,
-                // Use the VideoPlayer widget to display the video.
-                child: VideoPlayer(_playerController),
-              );
-            } else {
-              // If the VideoPlayerController is still initializing, show a
-              // loading spinner.
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        );
+        widget = VideoContent(post: _post);
         break;
       case PostType.GifVideo:
         widget = GifVideoContent(post: _post);
@@ -231,12 +192,5 @@ class _PostContentState extends State<PostContent> {
         )
       ]),
     );
-  }
-
-  @override
-  void dispose() {
-    _playerController?.dispose();
-    _chewieController?.dispose();
-    super.dispose();
   }
 }
