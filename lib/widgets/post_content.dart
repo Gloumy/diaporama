@@ -4,12 +4,12 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content/gif_video_content.dart';
 import 'package:diaporama/widgets/post_content/image_content.dart';
+import 'package:diaporama/widgets/post_content/link_content.dart';
 import 'package:diaporama/widgets/post_content/self_post_content.dart';
 import 'package:diaporama/widgets/post_content/video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PostContent extends StatefulWidget {
   final Submission post;
@@ -51,7 +51,6 @@ class _PostContentState extends State<PostContent> {
   @override
   Widget build(BuildContext context) {
     Widget widget;
-    print("postType: ${getPostType()}");
     switch (getPostType()) {
       case PostType.SelfPost:
         widget = SelfPostContent(
@@ -68,56 +67,7 @@ class _PostContentState extends State<PostContent> {
         widget = ImageContent(url: _post.url.toString());
         break;
       case PostType.Link:
-        widget = GestureDetector(
-          onTap: () => launch(_post.url.toString()),
-          child: Container(
-            margin: EdgeInsets.all(8.0),
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: blueColor,
-                width: 2,
-              ),
-              borderRadius: BorderRadius.circular(5),
-              color: darkGreyColor,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: Icon(
-                    Icons.launch,
-                    color: blueColor,
-                  ),
-                  flex: 1,
-                ),
-                VerticalDivider(
-                  thickness: 2,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "Link",
-                        style: TextStyle(
-                          color: redditOrange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        _post.domain,
-                        style: TextStyle(color: lightGreyColor),
-                      ),
-                    ],
-                  ),
-                  flex: 3,
-                ),
-              ],
-            ),
-          ),
-        );
+        widget = LinkContent(post: _post);
         break;
       default:
         throw "Unsupported post type";
