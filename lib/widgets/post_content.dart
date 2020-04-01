@@ -6,6 +6,7 @@ import 'package:diaporama/widgets/post_content/gif_video_content.dart';
 import 'package:diaporama/widgets/post_content/image_content.dart';
 import 'package:diaporama/widgets/post_content/link_content.dart';
 import 'package:diaporama/widgets/post_content/self_post_content.dart';
+import 'package:diaporama/widgets/post_content/twet_content.dart';
 import 'package:diaporama/widgets/post_content/video_content.dart';
 import 'package:diaporama/widgets/post_content/youtube_video_content.dart';
 import 'package:draw/draw.dart';
@@ -48,6 +49,7 @@ class _PostContentState extends State<PostContent> {
             .contains(_post.domain) ||
         _post.url.toString().contains('.gifv')) return PostType.GifVideo;
     if (_post.isVideo) return PostType.Video;
+    if (_post.domain == "twitter.com") return PostType.Tweet;
 
     return PostType.Link;
   }
@@ -75,6 +77,11 @@ class _PostContentState extends State<PostContent> {
         break;
       case PostType.YoutubeVideo:
         widget = YoutubeVideoContent(
+          url: _post.url.toString(),
+        );
+        break;
+      case PostType.Tweet:
+        widget = TweetContent(
           url: _post.url.toString(),
         );
         break;
