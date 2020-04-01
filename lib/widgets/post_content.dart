@@ -4,6 +4,7 @@ import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/utils/custom_markdown_stylesheet.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
+import 'package:diaporama/widgets/post_content/gif_video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -43,6 +44,9 @@ class _PostContentState extends State<PostContent> {
       _initializeVideoPlayerFuture = _playerController.initialize();
     }
     if (getPostType() == PostType.GifVideo) {
+      VideoProvider.fromUri(_post.url)
+          .getVideos()
+          .forEach((u) => print(u.uri.toString()));
       Uri videoUrl = VideoProvider.fromUri(_post.url).getVideos().first.uri;
       _playerController = VideoPlayerController.network(videoUrl.toString());
       _playerController.initialize();
@@ -51,6 +55,7 @@ class _PostContentState extends State<PostContent> {
         aspectRatio: _playerController.value.aspectRatio,
         allowedScreenSleep: false,
       );
+      print("url :$videoUrl");
     }
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
@@ -59,7 +64,7 @@ class _PostContentState extends State<PostContent> {
   PostType getPostType() {
     if (_post.isSelf) return PostType.SelfPost;
     if (RegExp(r"\.(gif|jpe?g|bmp|png)$").hasMatch(_post.url.toString()))
-        return PostType.Image;
+      return PostType.Image;
     if (["v.redd.it", "gfycat.com", "i.redd.it", "i.imgur.com"]
             .contains(_post.domain) ||
         _post.url.toString().contains('.gifv')) return PostType.GifVideo;
@@ -71,6 +76,7 @@ class _PostContentState extends State<PostContent> {
   @override
   Widget build(BuildContext context) {
     Widget widget;
+    print("postType: ${getPostType()}");
     switch (getPostType()) {
       case PostType.SelfPost:
         widget = _post.selftext.isNotEmpty
@@ -110,9 +116,7 @@ class _PostContentState extends State<PostContent> {
         );
         break;
       case PostType.GifVideo:
-        widget = Chewie(
-          controller: _chewieController,
-        );
+        widget = GifVideoContent(post: _post);
         break;
       case PostType.Image:
         widget = Image.network(
