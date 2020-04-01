@@ -3,6 +3,7 @@ import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
 import 'package:diaporama/widgets/post_content/gif_video_content.dart';
+import 'package:diaporama/widgets/post_content/image_content.dart';
 import 'package:diaporama/widgets/post_content/self_post_content.dart';
 import 'package:diaporama/widgets/post_content/video_content.dart';
 import 'package:draw/draw.dart';
@@ -64,25 +65,7 @@ class _PostContentState extends State<PostContent> {
         widget = GifVideoContent(post: _post);
         break;
       case PostType.Image:
-        widget = Image.network(
-          _post.url.toString(),
-          loadingBuilder: (context, child, loadingProgress) {
-            if (loadingProgress == null) return child;
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  redditOrange,
-                ),
-                backgroundColor: darkGreyColor,
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        loadingProgress.expectedTotalBytes
-                    : null,
-              ),
-            );
-          },
-        );
+        widget = ImageContent(url: _post.url.toString());
         break;
       case PostType.Link:
         widget = GestureDetector(
