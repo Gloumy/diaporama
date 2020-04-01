@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tweet_webview/tweet_webview.dart';
 
 class TweetContent extends StatelessWidget {
   final String url;
@@ -7,8 +8,8 @@ class TweetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Tweet"),
+    return AbsorbPointer(
+      child: TweetWebView.tweetUrl(url),
     );
   }
 }
