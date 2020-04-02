@@ -2,6 +2,7 @@ import 'package:diaporama/models/post_type.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
+import 'package:diaporama/widgets/post_content/gfycat_video_content.dart';
 import 'package:diaporama/widgets/post_content/gif_video_content.dart';
 import 'package:diaporama/widgets/post_content/image_content.dart';
 import 'package:diaporama/widgets/post_content/link_content.dart';
@@ -45,11 +46,12 @@ class _PostContentState extends State<PostContent> {
     if (RegExp(
             r"(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\?(?:\S*?&?v\=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})")
         .hasMatch(_post.url.toString())) return PostType.YoutubeVideo;
-    if (["v.redd.it", "gfycat.com", "i.redd.it", "i.imgur.com"]
-            .contains(_post.domain) ||
+    if (["v.redd.it", "i.redd.it", "i.imgur.com"].contains(_post.domain) ||
         _post.url.toString().contains('.gifv')) return PostType.GifVideo;
     if (_post.isVideo) return PostType.Video;
     if (_post.domain == "twitter.com") return PostType.Tweet;
+    // Handle gfycat outside of VideoProvider as it returns 403 links
+    if (_post.domain == "gfycat.com") return PostType.GfycatVideo;
 
     return PostType.Link;
   }
@@ -68,6 +70,9 @@ class _PostContentState extends State<PostContent> {
         break;
       case PostType.GifVideo:
         widget = GifVideoContent(post: _post);
+        break;
+      case PostType.GfycatVideo:
+        widget = GfycatVideoContent(url: _post.url);
         break;
       case PostType.Image:
         widget = ImageContent(url: _post.url.toString());
