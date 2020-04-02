@@ -7,4 +7,5 @@ enum PostType {
   YoutubeVideo,
   Tweet,
   GfycatVideo,
+  ImgurImage,
 }

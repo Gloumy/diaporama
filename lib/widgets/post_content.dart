@@ -52,6 +52,7 @@ class _PostContentState extends State<PostContent> {
     if (_post.domain == "twitter.com") return PostType.Tweet;
     // Handle gfycat outside of VideoProvider as it returns 403 links
     if (_post.domain == "gfycat.com") return PostType.GfycatVideo;
+    if (_post.domain == "imgur.com") return PostType.ImgurImage;
 
     return PostType.Link;
   }
@@ -76,6 +77,10 @@ class _PostContentState extends State<PostContent> {
         break;
       case PostType.Image:
         widget = ImageContent(url: _post.url.toString());
+        break;
+      case PostType.ImgurImage:
+        String imageId = _post.url.path.substring(1);
+        widget = ImageContent(url: "https://i.imgur.com/$imageId.jpg");
         break;
       case PostType.Link:
         widget = LinkContent(post: _post);
