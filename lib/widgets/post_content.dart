@@ -49,7 +49,7 @@ class _PostContentState extends State<PostContent> {
     if (["v.redd.it", "i.redd.it", "i.imgur.com"].contains(_post.domain) ||
         _post.url.toString().contains('.gifv')) return PostType.GifVideo;
     if (_post.isVideo) return PostType.Video;
-    if (_post.domain == "twitter.com") return PostType.Tweet;
+    // if (_post.domain == "twitter.com") return PostType.Tweet;
     // Handle gfycat outside of VideoProvider as it returns 403 links
     if (_post.domain == "gfycat.com") return PostType.GfycatVideo;
     if (_post.domain == "imgur.com") return PostType.ImgurImage;
