@@ -29,12 +29,13 @@ class PostContent extends StatefulWidget {
 }
 
 class _PostContentState extends State<PostContent> {
-  Submission get _post => widget.post;
+  Submission _post;
   bool get _loadMore => widget.loadMore;
 
   @override
   void initState() {
     super.initState();
+    _post = widget.post;
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
   }
@@ -55,6 +56,23 @@ class _PostContentState extends State<PostContent> {
     if (_post.domain == "imgur.com") return PostType.ImgurImage;
 
     return PostType.Link;
+  }
+
+  void _vote(VoteState vote) async {
+    if (vote != _post.vote) {
+      if (vote == VoteState.upvoted) {
+        await _post.upvote();
+      } else if (vote == VoteState.downvoted) {
+        await _post.downvote();
+      }
+    } else {
+      await _post.clearVote();
+    }
+    dynamic post = await _post.refresh();
+    // _post.refresh returns a list with the submission being the first element
+    setState(() {
+      _post = post.first;
+    });
   }
 
   @override
@@ -115,16 +133,28 @@ class _PostContentState extends State<PostContent> {
         height: 35,
         child: Row(
           children: <Widget>[
-            Icon(
-              Icons.arrow_upward,
-              color: blueColor,
+            GestureDetector(
+              onTap: () => _vote(VoteState.upvoted),
+              child: Icon(
+                Icons.arrow_upward,
+                color:
+                    _post.vote == VoteState.upvoted ? redditOrange : blueColor,
+              ),
             ),
             Text(
               _post.score.toString(),
               style:
                   TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
             ),
-            Icon(Icons.arrow_downward, color: blueColor),
+            GestureDetector(
+              onTap: () => _vote(VoteState.downvoted),
+              child: Icon(
+                Icons.arrow_downward,
+                color: _post.vote == VoteState.downvoted
+                    ? redditOrange
+                    : blueColor,
+              ),
+            ),
           ],
         ),
       ),
