@@ -15,7 +15,8 @@ class PostCommentWidget extends StatefulWidget {
 }
 
 class _PostCommentWidgetState extends State<PostCommentWidget> {
-  dynamic get _comment => widget.comment;
+  // dynamic get _comment => widget.comment;
+  dynamic _comment;
   int get _level => widget.level;
 
   final List<Color> commentBorderColor = [
@@ -30,6 +31,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   bool _collapseChildren = false;
 
   @override
+  void initState() {
+    super.initState();
+    _comment = widget.comment;
+  }
+
+  @override
   Widget build(BuildContext context) {
     Widget widget;
 
@@ -40,8 +47,18 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             _collapseChildren = !_collapseChildren;
           });
         },
-        onDoubleTap: () {
-          print("upvote");
+        onDoubleTap: () async {
+          if (_comment.vote == VoteState.none) {
+            await _comment.upvote(waitForResponse: true);
+          } else if (_comment.vote == VoteState.upvoted) {
+            await _comment.downvote(waitForResponse: true);
+          } else if (_comment.vote == VoteState.downvoted) {
+            await _comment.clearVote(waitForResponse: true);
+          }
+          await _comment.refresh();
+          setState(() {
+            _comment = _comment;
+          });
         },
         child: Column(
           children: <Widget>[
