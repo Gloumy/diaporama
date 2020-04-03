@@ -1,10 +1,11 @@
+import 'package:diaporama/models/app_settings.dart';
 import 'package:diaporama/services/reddit_client_service.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/states/subreddits_state.dart';
 import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 class GlobalState with ChangeNotifier {
@@ -56,9 +57,10 @@ class GlobalState with ChangeNotifier {
   }
 
   Future<void> checkCredentials() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey("credentials")) {
-      _credentials = prefs.getString("credentials");
+    Box box = await Hive.openBox<AppSettings>("settings");
+    AppSettings settings = box.getAt(0);
+    if (settings.credentials.isNotEmpty) {
+      _credentials = settings.credentials;
       notifyListeners();
     }
   }
