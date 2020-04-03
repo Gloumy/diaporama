@@ -9,4 +9,18 @@ class AppSettings extends HiveObject {
 
   @HiveField(1)
   String credentials;
+
+  AppSettings({
+    this.stillAVirgin,
+    this.credentials,
+  });
+
+  AppSettings copyWith({
+    bool stillAVirgin,
+    String credentials,
+  }) =>
+      AppSettings(
+        stillAVirgin: stillAVirgin ?? this.stillAVirgin,
+        credentials: credentials ?? this.credentials,
+      );
 }
