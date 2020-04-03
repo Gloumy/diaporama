@@ -58,10 +58,12 @@ class GlobalState with ChangeNotifier {
 
   Future<void> checkCredentials() async {
     Box box = await Hive.openBox<AppSettings>("settings");
-    AppSettings settings = box.getAt(0);
-    if (settings.credentials.isNotEmpty) {
-      _credentials = settings.credentials;
-      notifyListeners();
+    if (box.isNotEmpty) {
+      AppSettings settings = box.getAt(0);
+      if (settings.credentials.isNotEmpty) {
+        _credentials = settings.credentials;
+        notifyListeners();
+      }
     }
   }
 }
