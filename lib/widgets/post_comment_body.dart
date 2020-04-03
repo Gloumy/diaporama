@@ -4,7 +4,6 @@ import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html_unescape/html_unescape.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostCommentBody extends StatelessWidget {
@@ -25,6 +24,28 @@ class PostCommentBody extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
+              if (comment.vote == VoteState.upvoted)
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Icon(
+                    Icons.arrow_upward,
+                    color: redditOrange,
+                    size: 14,
+                  ),
+                ),
+              if (comment.vote == VoteState.downvoted)
+                Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Icon(
+                    Icons.arrow_downward,
+                    color: redditOrange,
+                    size: 14,
+                  ),
+                ),
               //The post's author
               Text(
                 comment.author,
