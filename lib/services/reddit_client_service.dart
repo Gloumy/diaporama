@@ -1,6 +1,7 @@
+import 'package:diaporama/models/app_settings.dart';
 import 'package:diaporama/utils/secrets.dart';
 import 'package:draw/draw.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 
 class RedditClientService {
   final Reddit reddit;
@@ -35,8 +36,10 @@ class RedditClientService {
   Future<void> authorizeClient(String authCode) async {
     reddit.auth.url(['*'], "diaporama-auth");
     await reddit.auth.authorize(authCode);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("credentials", reddit.auth.credentials.toJson());
+    Box<AppSettings> box = await Hive.openBox<AppSettings>("settings");
+    AppSettings settings = box.getAt(0);
+    settings.credentials = reddit.auth.credentials.toJson();
+    await settings.save();
   }
 
   Future<void> setUsername() async {
