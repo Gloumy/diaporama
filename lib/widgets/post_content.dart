@@ -33,10 +33,13 @@ class _PostContentState extends State<PostContent> {
   Submission _post;
   bool get _loadMore => widget.loadMore;
 
+  PostType _postType;
+
   @override
   void initState() {
     super.initState();
     _post = widget.post;
+    _postType = getPostType();
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
   }
@@ -76,10 +79,34 @@ class _PostContentState extends State<PostContent> {
     });
   }
 
+  void _openShareOptions() {
+    if (_postType == PostType.SelfPost) {
+      Share.share(_post.url.toString());
+    } else {
+      showModalBottomSheet(
+          context: context,
+          builder: (context) => Container(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: Text("Share direct link"),
+                      onTap: () => Share.share(_post.url.toString()),
+                    ),
+                    ListTile(
+                      title: Text("Share thread link"),
+                      onTap: () => Share.share("https://redd.it/${_post.id}"),
+                    ),
+                  ],
+                ),
+              ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget widget;
-    switch (getPostType()) {
+    switch (_postType) {
       case PostType.SelfPost:
         widget = SelfPostContent(
           text: _post.selftext,
@@ -160,7 +187,7 @@ class _PostContentState extends State<PostContent> {
               child: Container(),
             ),
             GestureDetector(
-              onTap: () => Share.share(_post.url.toString()),
+              onTap: _openShareOptions,
               child: Icon(
                 Icons.share,
                 color: blueColor,
