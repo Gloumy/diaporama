@@ -84,17 +84,31 @@ class _PostContentState extends State<PostContent> {
       Share.share(_post.url.toString());
     } else {
       showModalBottomSheet(
+          backgroundColor: mediumGreyColor,
           context: context,
           builder: (context) => Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                  top: BorderSide(
+                    color: redditOrange,
+                    width: 2,
+                  ),
+                )),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
-                      title: Text("Share direct link"),
+                      title: Text(
+                        "Share direct link",
+                        style: TextStyle(color: lightGreyColor),
+                      ),
                       onTap: () => Share.share(_post.url.toString()),
                     ),
                     ListTile(
-                      title: Text("Share thread link"),
+                      title: Text(
+                        "Share thread link",
+                        style: TextStyle(color: lightGreyColor),
+                      ),
                       onTap: () => Share.share("https://redd.it/${_post.id}"),
                     ),
                   ],
