@@ -13,6 +13,7 @@ import 'package:diaporama/widgets/post_content/youtube_video_content.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class PostContent extends StatefulWidget {
   final Submission post;
@@ -153,6 +154,16 @@ class _PostContentState extends State<PostContent> {
                 color: _post.vote == VoteState.downvoted
                     ? redditOrange
                     : blueColor,
+              ),
+            ),
+            Expanded(
+              child: Container(),
+            ),
+            GestureDetector(
+              onTap: () => Share.share(_post.url.toString()),
+              child: Icon(
+                Icons.share,
+                color: blueColor,
               ),
             ),
           ],
