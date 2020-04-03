@@ -47,8 +47,13 @@ class UserGreeting extends StatelessWidget {
                       redirectUri: Uri.parse("diaporama://cornet.dev"),
                     );
                     launch(
-                      reddit.auth.url(["read", "save", "account", "identity"],
-                          "diaporama-auth").toString(),
+                      reddit.auth.url([
+                        "read",
+                        "save",
+                        "account",
+                        "identity",
+                        "vote",
+                      ], "diaporama-auth").toString(),
                     );
                   },
                   icon: Icon(
