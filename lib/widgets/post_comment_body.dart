@@ -30,15 +30,12 @@ class PostCommentBody extends StatelessWidget {
                 comment.author,
                 style: TextStyle(
                     fontSize: 12.0,
-                    color: comment.author ==
-                            Provider.of<String>(context, listen: false)
-                        ? redditOrange
-                        : lightGreyColor,
+                    color: comment.isSubmitter ? redditOrange : lightGreyColor,
                     decoration: TextDecoration.underline,
                     decorationColor: redditOrange,
                     fontWeight: FontWeight.bold),
               ),
-              if (comment.author == Provider.of<String>(context, listen: false))
+              if (comment.isSubmitter)
                 Container(
                   decoration: BoxDecoration(
                       color: Colors.black26,
