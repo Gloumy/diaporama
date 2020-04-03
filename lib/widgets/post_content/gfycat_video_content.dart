@@ -17,7 +17,7 @@ class GfycatVideoContent extends StatefulWidget {
 class _GfycatVideoContentState extends State<GfycatVideoContent> {
   Future<String> _retrieveLink() async {
     String videoName = widget.url.path.substring(1);
-
+    
     Response response =
         await Dio().get('https://api.gfycat.com/v1/gfycats/$videoName');
 
@@ -34,6 +34,27 @@ class _GfycatVideoContentState extends State<GfycatVideoContent> {
         if (snapshot.hasData) {
           return ImageContent(
             url: snapshot.data,
+          );
+        } else if (snapshot.hasError) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: darkGreyColor,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(children: <Widget>[
+              Icon(
+                Icons.error,
+                color: redditOrange,
+              ),
+              Text(
+                "Couldn't retrieve content",
+                style: TextStyle(
+                  color: lightGreyColor,
+                ),
+              ),
+            ]),
           );
         } else {
           return Padding(
