@@ -67,6 +67,7 @@ class FirstTimeModal extends StatelessWidget {
                   "account",
                   "identity",
                   "vote",
+                  "submit",
                 ], "diaporama-auth").toString(),
               );
             },

@@ -53,6 +53,7 @@ class UserGreeting extends StatelessWidget {
                         "account",
                         "identity",
                         "vote",
+                        "submit",
                       ], "diaporama-auth").toString(),
                     );
                   },
