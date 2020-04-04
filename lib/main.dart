@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:diaporama/screens/home_screen.dart';
 import 'package:diaporama/services/hive_service.dart';
 import 'package:diaporama/states/global_state.dart';
@@ -99,11 +100,14 @@ class MyApp extends StatelessWidget {
           value: globalState.subredditsState,
         ),
       ],
-      child: MaterialApp(
-        title: 'Diaporama',
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.dark,
-        home: HomeScreen(),
+      child: BotToastInit(
+        child: MaterialApp(
+          title: 'Diaporama',
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.dark,
+          home: HomeScreen(),
+          navigatorObservers: [BotToastNavigatorObserver()],
+        ),
       ),
     );
   }
