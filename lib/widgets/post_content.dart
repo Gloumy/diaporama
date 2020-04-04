@@ -203,6 +203,18 @@ class _PostContentState extends State<PostContent> {
                     : blueColor,
               ),
             ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              _post.numComments.toString(),
+              style:
+                  TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
+            ),
+            GestureDetector(
+              // onTap: () => _vote(VoteState.downvoted),
+              child: Icon(Icons.add_comment, color: blueColor),
+            ),
             Expanded(
               child: Container(),
             ),
