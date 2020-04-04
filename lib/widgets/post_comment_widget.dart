@@ -4,6 +4,7 @@ import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comment_body.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class PostCommentWidget extends StatefulWidget {
@@ -138,7 +139,17 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                   : blueColor,
                             ),
                           ),
-                          Icon(Icons.content_copy),
+                          GestureDetector(
+                            child: Icon(
+                              Icons.content_copy,
+                              color: blueColor,
+                            ),
+                            onTap: () {
+                              Clipboard.setData(
+                                  ClipboardData(text: _comment.body));
+                              BotToast.showText(text: "Copied to clipboard");
+                            },
+                          ),
                         ],
                       ),
                     ),
