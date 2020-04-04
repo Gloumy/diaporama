@@ -41,6 +41,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     _comment = widget.comment;
   }
 
+  void _refreshComment() async {
+    await _comment.refresh();
+    setState(() {
+      _comment = _comment;
+    });
+  }
+
   void _vote(VoteState vote) async {
     if (!Provider.of<GlobalState>(context, listen: false).hascredentials) {
       BotToast.showText(text: "Hey, you must be logged in to do that !");
@@ -55,10 +62,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     } else {
       await _comment.clearVote();
     }
-    await _comment.refresh();
-    setState(() {
-      _comment = _comment;
-    });
+    _refreshComment();
   }
 
   @override
@@ -80,10 +84,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           } else if (_comment.vote == VoteState.downvoted) {
             await _comment.clearVote(waitForResponse: true);
           }
-          await _comment.refresh();
-          setState(() {
-            _comment = _comment;
-          });
+          _refreshComment();
         },
         child: Column(
           children: <Widget>[
@@ -119,7 +120,21 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(Icons.star),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(25),
+                            onTap: () async {
+                              if (!_comment.saved) {
+                                await _comment.save();
+                              } else {
+                                await _comment.unsave();
+                              }
+                              _refreshComment();
+                            },
+                            child: Icon(
+                              Icons.star,
+                              color: _comment.saved ? redditOrange : blueColor,
+                            ),
+                          ),
                           Icon(Icons.reply),
                           GestureDetector(
                             onTap: () => _vote(VoteState.upvoted),
