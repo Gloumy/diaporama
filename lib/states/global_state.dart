@@ -60,7 +60,7 @@ class GlobalState with ChangeNotifier {
     Box box = await Hive.openBox<AppSettings>("settings");
     if (box.isNotEmpty) {
       AppSettings settings = box.getAt(0);
-      if (settings.credentials.isNotEmpty) {
+      if (settings.credentials != null) {
         _credentials = settings.credentials;
         notifyListeners();
       }
