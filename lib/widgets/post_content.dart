@@ -1,4 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:diaporama/models/post_type.dart';
+import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/states/posts_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comments_list.dart';
@@ -63,6 +65,10 @@ class _PostContentState extends State<PostContent> {
   }
 
   void _vote(VoteState vote) async {
+    if (!Provider.of<GlobalState>(context, listen: false).hascredentials) {
+      BotToast.showText(text: "Hey, you must be logged in to do that !");
+      return;
+    }
     if (vote != _post.vote) {
       if (vote == VoteState.upvoted) {
         await _post.upvote();
