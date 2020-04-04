@@ -35,7 +35,7 @@ class _PostContentState extends State<PostContent> {
   Submission _post;
   bool get _loadMore => widget.loadMore;
 
-  bool _displayCommentForm = true;
+  bool _displayCommentForm = false;
   TextEditingController _commentController = TextEditingController();
 
   PostType _postType;
@@ -47,6 +47,13 @@ class _PostContentState extends State<PostContent> {
     _postType = getPostType();
     if (_loadMore)
       Provider.of<PostsState>(context, listen: false).loadPosts(loadMore: true);
+  }
+
+  void _toggleCommentForm() {
+    setState(() {
+      _displayCommentForm = !_displayCommentForm;
+    });
+    _commentController.clear();
   }
 
   PostType getPostType() {
@@ -215,7 +222,7 @@ class _PostContentState extends State<PostContent> {
                   TextStyle(color: lightGreyColor, fontWeight: FontWeight.bold),
             ),
             GestureDetector(
-              // onTap: () => _vote(VoteState.downvoted),
+              onTap: _toggleCommentForm,
               child: Icon(Icons.add_comment, color: blueColor),
             ),
             Expanded(
@@ -257,15 +264,13 @@ class _PostContentState extends State<PostContent> {
               RaisedButton.icon(
                   onPressed: () async {
                     if (_commentController.text.isEmpty) return;
-                    Comment newComment =
-                        await _post.reply(_commentController.text);
-                    dynamic post = await _post.refresh();
-                    post[0].refreshComments();
+                    await _post.reply(_commentController.text);
+                    dynamic refreshedPost = await _post.refresh();
+                    Submission post = refreshedPost.first;
                     setState(() {
-                      _post = post[0];
-                      _post.comments.comments.insert(0, newComment);
+                      _post = post;
                     });
-                    _commentController.clear();
+                    _toggleCommentForm();
                   },
                   color: blueColor,
                   icon: Icon(
