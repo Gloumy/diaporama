@@ -35,6 +35,9 @@ class _PostContentState extends State<PostContent> {
   Submission _post;
   bool get _loadMore => widget.loadMore;
 
+  bool _displayCommentForm = true;
+  TextEditingController _commentController = TextEditingController();
+
   PostType _postType;
 
   @override
@@ -228,6 +231,54 @@ class _PostContentState extends State<PostContent> {
           ],
         ),
       ),
+      if (_displayCommentForm)
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                style: TextStyle(
+                  color: lightGreyColor,
+                ),
+                controller: _commentController,
+                cursorColor: blueColor,
+                decoration: InputDecoration(
+                  fillColor: darkGreyColor,
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: redditOrange, width: 2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: blueColor, width: 2),
+                  ),
+                ),
+              ),
+              RaisedButton.icon(
+                  onPressed: () async {
+                    if (_commentController.text.isEmpty) return;
+                    Comment newComment =
+                        await _post.reply(_commentController.text);
+                    dynamic post = await _post.refresh();
+                    post[0].refreshComments();
+                    setState(() {
+                      _post = post[0];
+                      _post.comments.comments.insert(0, newComment);
+                    });
+                    _commentController.clear();
+                  },
+                  color: blueColor,
+                  icon: Icon(
+                    Icons.check,
+                    color: lightGreyColor,
+                  ),
+                  label: Text(
+                    "Submit",
+                    style: TextStyle(color: lightGreyColor),
+                  ))
+            ],
+          ),
+        ),
       PostCommentsList(
         post: _post,
       )
