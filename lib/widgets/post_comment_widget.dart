@@ -1,7 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/widgets/post_comment_body.dart';
 import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PostCommentWidget extends StatefulWidget {
   final dynamic comment;
@@ -29,11 +32,32 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   ];
 
   bool _collapseChildren = false;
+  bool _displayActionsBar = true;
 
   @override
   void initState() {
     super.initState();
     _comment = widget.comment;
+  }
+
+  void _vote(VoteState vote) async {
+    if (!Provider.of<GlobalState>(context, listen: false).hascredentials) {
+      BotToast.showText(text: "Hey, you must be logged in to do that !");
+      return;
+    }
+    if (vote != _comment.vote) {
+      if (vote == VoteState.upvoted) {
+        await _comment.upvote();
+      } else if (vote == VoteState.downvoted) {
+        await _comment.downvote();
+      }
+    } else {
+      await _comment.clearVote();
+    }
+    await _comment.refresh();
+    setState(() {
+      _comment = _comment;
+    });
   }
 
   @override
@@ -78,6 +102,46 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                   PostCommentBody(
                     comment: _comment,
                   ),
+                  if (_displayActionsBar)
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: redditOrange, width: 2),
+                            top: BorderSide(
+                              color: redditOrange,
+                              width: 2,
+                            ),
+                          ),
+                          color: Colors.black12),
+                      height: 35,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Icon(Icons.star),
+                          Icon(Icons.reply),
+                          GestureDetector(
+                            onTap: () => _vote(VoteState.upvoted),
+                            child: Icon(
+                              Icons.arrow_upward,
+                              color: _comment.vote == VoteState.upvoted
+                                  ? redditOrange
+                                  : blueColor,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => _vote(VoteState.downvoted),
+                            child: Icon(
+                              Icons.arrow_downward,
+                              color: _comment.vote == VoteState.downvoted
+                                  ? redditOrange
+                                  : blueColor,
+                            ),
+                          ),
+                          Icon(Icons.content_copy),
+                        ],
+                      ),
+                    ),
                   if (_collapseChildren)
                     Container(
                       child: Icon(
