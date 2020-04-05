@@ -73,6 +73,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
       await _comment.clearVote();
     }
     _refreshComment();
+    _toggleActionsBar();
+  }
+
+  void _toggleActionsBar() {
+    setState(() {
+      _displayActionsBar = !_displayActionsBar;
+    });
   }
 
   @override
@@ -96,6 +103,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           }
           _refreshComment();
         },
+        onLongPress: _toggleActionsBar,
         child: Column(
           children: <Widget>[
             Container(
@@ -139,6 +147,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                 await _comment.unsave();
                               }
                               _refreshComment();
+                              _toggleActionsBar();
                             },
                             child: Icon(
                               Icons.star,
@@ -179,6 +188,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                               Clipboard.setData(
                                   ClipboardData(text: _comment.body));
                               BotToast.showText(text: "Copied to clipboard");
+                              _toggleActionsBar();
                             },
                           ),
                         ],
@@ -215,6 +225,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                 await _comment.reply(_commentController.text);
                                 _refreshComment();
                                 _toggleCommentForm();
+                                _toggleActionsBar();
                                 // TODO : Fix comment refreshing and insertion/rebuild
                               },
                               color: blueColor,
