@@ -27,24 +27,38 @@ class _PostCommentsListState extends State<PostCommentsList> {
       return FutureBuilder(
           future: initComments(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  for (dynamic topComment in _post.comments.comments)
-                    PostCommentWidget(
-                      level: 0,
-                      comment: topComment,
-                    )
-                ],
-              );
-            } else {
-              if (snapshot.hasError) {
-                print(snapshot.error);
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    for (dynamic topComment in _post.comments.comments)
+                      PostCommentWidget(
+                        level: 0,
+                        comment: topComment,
+                      )
+                  ],
+                );
+              } else {
+                if (snapshot.hasError) {
+                  return Text("Couldn't retrieve comments - ${snapshot.error}");
+                }
+                return Text(
+                  "--- No comments ---",
+                  style: TextStyle(
+                    color: lightGreyColor,
+                  ),
+                );
               }
-              return Container(
-                height: 0.0,
-                width: 0.0,
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    redditOrange,
+                  ),
+                  backgroundColor: darkGreyColor,
+                ),
               );
             }
           });
