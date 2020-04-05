@@ -33,7 +33,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   ];
 
   bool _collapseChildren = false;
-  bool _displayActionsBar = true;
+  bool _displayActionsBar = false;
+  bool _displayCommentForm = false;
+
+  TextEditingController _commentController = TextEditingController();
 
   @override
   void initState() {
@@ -46,6 +49,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     setState(() {
       _comment = _comment;
     });
+  }
+
+  void _toggleCommentForm() {
+    setState(() {
+      _displayCommentForm = !_displayCommentForm;
+    });
+    _commentController.clear();
   }
 
   void _vote(VoteState vote) async {
@@ -135,7 +145,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                               color: _comment.saved ? redditOrange : blueColor,
                             ),
                           ),
-                          Icon(Icons.reply),
+                          InkWell(
+                            onTap: _toggleCommentForm,
+                            child: Icon(
+                              Icons.reply,
+                              color: blueColor,
+                            ),
+                          ),
                           GestureDetector(
                             onTap: () => _vote(VoteState.upvoted),
                             child: Icon(
@@ -165,6 +181,50 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                               BotToast.showText(text: "Copied to clipboard");
                             },
                           ),
+                        ],
+                      ),
+                    ),
+                  if (_displayCommentForm)
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFormField(
+                            style: TextStyle(
+                              color: lightGreyColor,
+                            ),
+                            controller: _commentController,
+                            cursorColor: blueColor,
+                            decoration: InputDecoration(
+                              fillColor: darkGreyColor,
+                              filled: true,
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: redditOrange, width: 2),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: blueColor, width: 2),
+                              ),
+                            ),
+                          ),
+                          RaisedButton.icon(
+                              onPressed: () async {
+                                if (_commentController.text.isEmpty) return;
+                                await _comment.reply(_commentController.text);
+                                _refreshComment();
+                                _toggleCommentForm();
+                              },
+                              color: blueColor,
+                              icon: Icon(
+                                Icons.check,
+                                color: lightGreyColor,
+                              ),
+                              label: Text(
+                                "Submit",
+                                style: TextStyle(color: lightGreyColor),
+                              ))
                         ],
                       ),
                     ),
