@@ -215,6 +215,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                 await _comment.reply(_commentController.text);
                                 _refreshComment();
                                 _toggleCommentForm();
+                                // TODO : Fix comment refreshing and insertion/rebuild
                               },
                               color: blueColor,
                               icon: Icon(

@@ -271,6 +271,7 @@ class _PostContentState extends State<PostContent> {
                       _post = post;
                     });
                     _toggleCommentForm();
+                    // TODO : Fix comment refreshing and insertion/rebuild
                   },
                   color: blueColor,
                   icon: Icon(
