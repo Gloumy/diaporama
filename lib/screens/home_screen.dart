@@ -3,6 +3,7 @@ import 'package:diaporama/presenters/redditor/user_greeting.dart';
 import 'package:diaporama/presenters/subreddits/content_sources_grid.dart';
 import 'package:diaporama/widgets/custom_app_bar.dart';
 import 'package:diaporama/widgets/first_time_modal.dart';
+import 'package:diaporama/widgets/sync_multireddits_button.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

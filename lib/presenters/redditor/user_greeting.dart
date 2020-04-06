@@ -1,3 +1,4 @@
+import 'package:diaporama/screens/settings_screen.dart';
 import 'package:diaporama/states/global_state.dart';
 import 'package:diaporama/utils/colors.dart';
 import 'package:diaporama/utils/secrets.dart';
@@ -61,7 +62,22 @@ class UserGreeting extends StatelessWidget {
                     Icons.person,
                     size: 20,
                   ),
-                  label: Text("Login"))
+                  label: Text("Login")),
+            Expanded(
+              child: Container(),
+            ),
+            InkWell(
+              child: Icon(
+                Icons.settings,
+                color: blueColor,
+              ),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsScreen(),
+                ),
+              ),
+            ),
           ],
         );
       },
