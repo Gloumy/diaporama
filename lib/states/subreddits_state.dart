@@ -10,6 +10,7 @@ class SubredditsState with ChangeNotifier {
   List<ContentSource> _sources = [
     ContentSource(subredditsString: "frontpage", label: "Front Page"),
     ContentSource(subredditsString: "popular", label: "Popular"),
+    ContentSource(subredditsString: "all", label: "All"),
   ];
 
   List<ContentSource> get contentSources => List.from(_sources);
