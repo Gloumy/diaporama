@@ -66,4 +66,17 @@ class GlobalState with ChangeNotifier {
       }
     }
   }
+
+  Future<void> logout() async {
+    Reddit reddit = await Reddit.createUntrustedReadOnlyInstance(
+      clientId: redditSecret,
+      userAgent: "diaporama-app",
+      deviceId: Uuid().v4(),
+    );
+    _redditClientService = RedditClientService(reddit: reddit);
+    Box<AppSettings> settingsBox = await Hive.openBox<AppSettings>("settings");
+    AppSettings settings = settingsBox.getAt(0);
+    settings.credentials = null;
+    settings.save();
+  }
 }
