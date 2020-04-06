@@ -1,4 +1,5 @@
 import 'package:diaporama/states/global_state.dart';
+import 'package:diaporama/states/subreddits_state.dart';
 import 'package:diaporama/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -23,7 +24,9 @@ class SettingsScreen extends StatelessWidget {
                   icon: Icon(MaterialCommunityIcons.logout),
                   label: Text("Logout")),
               RaisedButton.icon(
-                  onPressed: () {},
+                  onPressed: () =>
+                      Provider.of<SubredditsState>(context, listen: false)
+                          .syncMultiReddits(),
                   icon: Icon(Icons.sync),
                   label: Text("Sync my multireddits")),
             ],

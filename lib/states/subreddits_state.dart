@@ -53,4 +53,15 @@ class SubredditsState with ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> syncMultiReddits() async {
+    List<Multireddit> multireddits =
+        await redditService.reddit.user.multireddits();
+    for (Multireddit multi in multireddits) {
+      String subredditsString =
+          multi.subreddits.map((s) => s.displayName).join("+");
+      await addSource(
+          label: multi.displayName, subredditsString: subredditsString);
+    }
+  }
 }
