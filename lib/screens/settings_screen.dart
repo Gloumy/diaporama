@@ -6,7 +6,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(subtitle: "Settings",),
         body: SingleChildScrollView(
           child: Container(),
         ),
