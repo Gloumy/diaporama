@@ -79,32 +79,36 @@ class _ViewerScreenState extends State<ViewerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Consumer<PostsState>(
-        builder: (context, state, _) {
-          return WillPopScope(
-            onWillPop: () => _exitView(context),
-            child: PageView.builder(
-                controller: _controller,
-                itemCount: state.contents.length,
-                itemBuilder: (context, index) {
-                  Submission post = state.contents[index];
-                  bool loadMore =
-                      (index > state.contents.length - 10 && !state.isLoading);
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        PostHeader(post: post),
-                        PostContent(
-                          post: post,
-                          loadMore: loadMore,
+      body: SafeArea(
+        child: Consumer<PostsState>(
+          builder: (context, state, _) {
+            return WillPopScope(
+              onWillPop: () => _exitView(context),
+              child: StreamBuilder(
+                stream: state.streamController.stream,
+                builder: (context, snapshot) => PageView.builder(
+                    controller: _controller,
+                    itemCount: state.contents.length,
+                    itemBuilder: (context, index) {
+                      Submission post = state.contents[index];
+                      bool loadMore = (index > state.contents.length - 10);
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            PostHeader(post: post),
+                            PostContent(
+                              post: post,
+                              loadMore: loadMore,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                }),
-          );
-        },
-      )),
+                      );
+                    }),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

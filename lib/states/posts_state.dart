@@ -7,7 +7,18 @@ import 'package:flutter/material.dart';
 class PostsState with ChangeNotifier {
   final RedditClientService redditService;
 
-  PostsState({@required this.redditService});
+  PostsState({@required this.redditService}) {
+    streamController = StreamController.broadcast();
+
+    streamController.stream.listen((post) {
+      Submission content = post;
+      content.refreshComments(); //load comments directly
+      _contents.add(content);
+    }, onDone: () {
+      setBusy(value: false);
+      notifyListeners();
+    });
+  }
 
   StreamController<UserContent> streamController;
   List<Submission> _contents = [];
@@ -24,40 +35,28 @@ class PostsState with ChangeNotifier {
   }) {
     setBusy();
     source = source ?? _selectedSource;
-    streamController = StreamController.broadcast();
+
     if (!loadMore) _contents.clear();
     _setSelectedSource(source);
     notifyListeners();
 
-    streamController.stream.listen((post) {
-      Submission content = post;
-      content.refreshComments(); //load comments directly
-      _contents.add(content);
-    }, onDone: () {
-      setBusy(value: false);
-    });
-
     String after = loadMore ? _contents.last.fullname : null;
-
+    Stream<UserContent> stream;
     switch (source.subredditsString) {
       case "frontpage":
-        redditService.reddit.front
-            .best(
-              limit: limit,
-              after: after,
-            )
-            .pipe(streamController);
+        stream = redditService.reddit.front.best(
+          limit: limit,
+          after: after,
+        );
         break;
       default:
-        redditService.reddit
-            .subreddit(source.subredditsString)
-            .hot(
+        stream = redditService.reddit.subreddit(source.subredditsString).hot(
               limit: limit,
               after: after,
-            )
-            .pipe(streamController);
+            );
         break;
     }
+    streamController.addStream(stream);
   }
 
   void setBusy({bool value = true}) {
