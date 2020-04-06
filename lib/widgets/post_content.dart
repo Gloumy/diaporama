@@ -88,11 +88,7 @@ class _PostContentState extends State<PostContent> {
     } else {
       await _post.clearVote();
     }
-    dynamic post = await _post.refresh();
-    // _post.refresh returns a list with the submission being the first element
-    setState(() {
-      _post = post.first;
-    });
+    _refreshPost();
   }
 
   void _openShareOptions() {
@@ -131,6 +127,14 @@ class _PostContentState extends State<PostContent> {
                 ),
               ));
     }
+  }
+
+  void _refreshPost() async {
+    dynamic post = await _post.refresh();
+    // _post.refresh returns a list with the submission being the first element
+    setState(() {
+      _post = post.first;
+    });
   }
 
   @override
@@ -224,6 +228,21 @@ class _PostContentState extends State<PostContent> {
             GestureDetector(
               onTap: _toggleCommentForm,
               child: Icon(Icons.add_comment, color: blueColor),
+            ),
+            InkWell(
+              borderRadius: BorderRadius.circular(25),
+              onTap: () async {
+                if (!_post.saved) {
+                  await _post.save();
+                } else {
+                  await _post.unsave();
+                }
+                _refreshPost();
+              },
+              child: Icon(
+                Icons.star,
+                color: _post.saved ? redditOrange : blueColor,
+              ),
             ),
             Expanded(
               child: Container(),
