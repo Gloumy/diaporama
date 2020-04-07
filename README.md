@@ -13,7 +13,10 @@
 
 You select your content source (list of subreddits) and you just have to swipe right/left to navigate between threads. Ain't it easy ?
 
-  
+### Screenshots
+<img  src="https://raw.githubusercontent.com/Gloumy/diaporama/master/screenshots/home_screen.png"  width="150">
+<img  src="https://raw.githubusercontent.com/Gloumy/diaporama/master/screenshots/add_source_screen.png"  width="150">
+<img  src="https://raw.githubusercontent.com/Gloumy/diaporama/master/screenshots/self_post.png"  width="150">
 
 ### Features (as of 2020-04-07)
 
